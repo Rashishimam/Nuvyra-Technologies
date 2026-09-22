@@ -1,93 +1,198 @@
 "use client";
 
-import React from "react";
-import { Search, PenTool, Code2, Rocket } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import React, { useState } from "react";
+import { motion, type Variants } from "framer-motion";
+import {
+  MessageSquare,
+  Target,
+  Palette,
+  Code2,
+  Rocket,
+  CheckCircle2,
+} from "lucide-react";
 import { SectionHeader } from "@/components/ui/section-header";
-import { ProcessStep } from "@/types";
+import { cn } from "@/lib/utils";
 
-const STEPS: (ProcessStep & { icon: React.ElementType })[] = [
+interface ProcessStepItem {
+  number: string;
+  title: string;
+  phase: string;
+  description: string;
+  deliverable: string;
+  icon: React.ElementType;
+  accent: string;
+}
+
+const PROCESS_STEPS: ProcessStepItem[] = [
   {
-    step: "01",
-    title: "Discovery & Blueprint",
-    description:
-      "We dive into your business goals, target audience, technical constraints, and roadmap to craft a rock-solid technical specification.",
-    deliverable: "Architecture Blueprint & Scope Plan",
-    icon: Search,
+    number: "01",
+    title: "Discuss",
+    phase: "Discovery & Alignment",
+    description: "Understand your business, target customers, goals, and core requirements.",
+    deliverable: "Project Scope & Strategy Blueprint",
+    icon: MessageSquare,
+    accent: "text-[#12372A] border-[#168B72]/30 bg-[#168B72]/10",
   },
   {
-    step: "02",
-    title: "Design & Prototyping",
-    description:
-      "We design modern, responsive UI mockups and interaction flows that match your brand identity with precision and polish.",
-    deliverable: "Interactive Design System",
-    icon: PenTool,
+    number: "02",
+    title: "Plan",
+    phase: "Architecture & Sitemaps",
+    description: "Define the structure, content hierarchy, features, and project direction.",
+    deliverable: "Information Architecture & Wireframe Map",
+    icon: Target,
+    accent: "text-[#168B72] border-[#2AB7A9]/30 bg-[#2AB7A9]/10",
   },
   {
-    step: "03",
-    title: "Agile Sprint Build",
-    description:
-      "Production-grade development using Next.js and TypeScript with regular milestone demos and clean, modular code commits.",
-    deliverable: "Staging Preview Environment",
+    number: "03",
+    title: "Design",
+    phase: "UI/UX & Interactive Prototypes",
+    description: "Create a modern, conversion-focused user interface and mobile layout.",
+    deliverable: "High-Fidelity Component System",
+    icon: Palette,
+    accent: "text-[#9A751F] border-[#D6A84B]/35 bg-[#D6A84B]/15",
+  },
+  {
+    number: "04",
+    title: "Develop",
+    phase: "Next.js Engineering & QA",
+    description: "Build, test, and optimize the website with clean code and sub-second speed.",
+    deliverable: "Production Next.js & TS Codebase",
     icon: Code2,
+    accent: "text-[#F26B4A] border-[#F26B4A]/30 bg-[#F26B4A]/10",
   },
   {
-    step: "04",
-    title: "QA, Polish & Launch",
-    description:
-      "Rigorous cross-browser testing, SEO audits, Lighthouse performance optimization, and seamless cloud deployment.",
-    deliverable: "Live Production Release & Handover",
+    number: "05",
+    title: "Launch",
+    phase: "Deployment & Verification",
+    description: "Deploy the final product, configure analytics, and provide ongoing support.",
+    deliverable: "Live Deployment & 100% Code Handover",
     icon: Rocket,
+    accent: "text-[#168B72] border-[#168B72]/40 bg-[#168B72]/15",
   },
 ];
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.25,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 25, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: [0.21, 0.47, 0.32, 0.98],
+    },
+  },
+};
+
 export function Process() {
+  const [activeStep, setActiveStep] = useState<number>(0);
+
   return (
-    <section id="process" className="py-24 px-4 sm:px-6 lg:px-8 relative">
+    <section
+      id="process"
+      className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 relative scroll-mt-16 bg-[#F7F7F2] border-b border-[rgba(23,33,31,0.08)] overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto">
         <SectionHeader
-          badge="How We Work"
-          title="A Predictable, High-Velocity"
-          highlightText="Engineering Process"
-          description="From initial strategy to live production deployment, here is our battle-tested development lifecycle."
+          badge="Project Workflow"
+          badgeVariant="emerald"
+          title="How We"
+          highlightText="Work"
+          description="A clear, predictable 5-step roadmap that keeps your project on schedule from kickoff to launch."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-          {STEPS.map((step, index) => {
-            const Icon = step.icon;
-            return (
-              <Card
-                key={step.step}
-                className="group relative flex flex-col justify-between p-6 border-white/10 hover:border-cyan-500/40"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="text-3xl font-black font-mono text-white/20 group-hover:text-cyan-400/50 transition-colors">
-                      {step.step}
-                    </span>
-                    <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 group-hover:scale-110 transition-transform">
-                      <Icon className="h-5 w-5" />
+        {/* Clean Timeline with Progressively Animated Connecting Line */}
+        <div className="relative max-w-6xl mx-auto">
+          {/* Animated progressive gradient timeline line for desktop */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            style={{ transformOrigin: "left" }}
+            className="hidden lg:block absolute top-[44px] left-[6%] right-[6%] h-[2.5px] bg-gradient-to-r from-[#12372A] via-[#168B72] via-[#2AB7A9] via-[#D6A84B] via-[#F26B4A] to-[#168B72] z-0 pointer-events-none rounded-full shadow-xs"
+          />
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 relative z-10"
+          >
+            {PROCESS_STEPS.map((step, idx) => {
+              const Icon = step.icon;
+              const isSelected = activeStep === idx;
+
+              return (
+                <motion.div
+                  key={step.number}
+                  variants={itemVariants}
+                  onClick={() => setActiveStep(idx)}
+                  className={cn(
+                    "relative flex flex-col justify-between p-6 rounded-3xl bg-[#FFFFFF] border transition-all duration-300 cursor-pointer group select-none shadow-xs",
+                    isSelected
+                      ? "border-[#168B72] shadow-xl scale-[1.03] -translate-y-1"
+                      : "border-[rgba(23,33,31,0.08)] hover:border-[rgba(23,33,31,0.22)] hover:shadow-md hover:-translate-y-0.5"
+                  )}
+                >
+                  <div>
+                    {/* Header: Step Number & Icon */}
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl font-bold font-mono text-[#17211F] group-hover:text-[#12372A] transition-colors">
+                          {step.number}
+                        </span>
+                        <div
+                          className={cn(
+                            "h-2 w-2 rounded-full transition-all duration-300",
+                            isSelected
+                              ? "bg-[#168B72] scale-125 shadow-[0_0_8px_#168B72]"
+                              : "bg-[rgba(23,33,31,0.15)] group-hover:bg-[#168B72]/60"
+                          )}
+                        />
+                      </div>
+
+                      <div className={cn("h-10 w-10 rounded-2xl border flex items-center justify-center transition-transform duration-300 group-hover:scale-110", step.accent)}>
+                        <Icon className="h-5 w-5" />
+                      </div>
                     </div>
+
+                    <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-[#168B72] block mb-1">
+                      {step.phase}
+                    </span>
+
+                    <h3 className="text-base font-bold text-[#17211F] mb-2 tracking-tight group-hover:text-[#12372A] transition-colors">
+                      {step.title}
+                    </h3>
+
+                    <p className="text-xs text-[#5A6966] leading-relaxed font-normal mb-4">
+                      {step.description}
+                    </p>
                   </div>
 
-                  <h3 className="text-lg font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">
-                    {step.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
-                    {step.description}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-white/5">
-                  <p className="text-[11px] font-mono text-cyan-300/80">
-                    <span className="text-slate-500 mr-1">Deliverable:</span>
-                    {step.deliverable}
-                  </p>
-                </div>
-              </Card>
-            );
-          })}
+                  {/* Output Milestone Tag */}
+                  <div className="pt-3 border-t border-[rgba(23,33,31,0.06)]">
+                    <div className="flex items-start gap-1.5 text-[11px] text-[#17211F]">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-[#168B72] shrink-0 mt-0.5" />
+                      <span className="leading-snug">{step.deliverable}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </div>
       </div>
     </section>

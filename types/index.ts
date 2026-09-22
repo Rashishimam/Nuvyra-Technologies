@@ -10,33 +10,32 @@ export interface ServiceItem {
   title: string;
   description: string;
   icon: LucideIcon;
-  tags: string[];
-}
-
-export interface ProblemSolutionItem {
-  problem: string;
-  solution: string;
+  tags?: string[];
+  cta?: string;
 }
 
 export interface PortfolioItem {
   id: string;
   title: string;
   category: string;
-  description: string;
-  stats?: string;
-  tags: string[];
-  link?: string;
+  tagline: string;
+  problem: string;
+  solution: string;
+  whatWeBuilt: string;
+  technologies: string[];
+  typeLabel: "Concept Project" | "Demo Project";
+  gradient: string;
 }
 
 export interface ProcessStep {
   step: string;
   title: string;
   description: string;
-  deliverable: string;
 }
 
-export interface StatItem {
-  value: string;
-  label: string;
-  subtext: string;
+export interface TeamMember {
+  name: string;
+  role: string;
+  description: string;
+  focus: string[];
 }

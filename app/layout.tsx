@@ -9,18 +9,41 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Nuvyra Technologies | Turning Ideas Into Digital Reality",
+  title: "Nuvyra Technologies | Bespoke Digital Engineering & Web Development",
   description:
-    "Elite digital agency engineering bespoke web applications, modern SaaS platforms, and scalable digital solutions for ambitious brands.",
+    "We design and build high-performance websites, custom web applications, and modern digital platforms for businesses that demand technical rigor, speed, and elegance.",
   keywords: [
     "Nuvyra Technologies",
     "Web Development",
-    "Next.js Agency",
-    "SaaS MVP",
-    "TypeScript",
-    "Software Engineering",
+    "Enterprise Web Applications",
+    "Bespoke Website Design",
+    "Next.js Development Studio",
+    "TypeScript Solutions",
+    "Custom Software Engineering",
   ],
-  authors: [{ name: "Nuvyra Technologies" }],
+  authors: [{ name: "Nuvyra Technologies", url: "https://nuvyratech.com" }],
+  creator: "Nuvyra Technologies",
+  publisher: "Nuvyra Technologies",
+  metadataBase: new URL("https://nuvyratech.com"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://nuvyratech.com",
+    title: "Nuvyra Technologies | Bespoke Digital Engineering & Web Development",
+    description:
+      "We design and build high-performance websites, custom web applications, and modern digital platforms for businesses that demand technical rigor, speed, and elegance.",
+    siteName: "Nuvyra Technologies",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nuvyra Technologies | Bespoke Digital Engineering & Web Development",
+    description:
+      "We design and build high-performance websites, custom web applications, and modern digital platforms for businesses that demand technical rigor, speed, and elegance.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -29,8 +52,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} dark scroll-smooth`}>
-      <body className="min-h-screen bg-[#06080E] text-slate-100 font-sans antialiased selection:bg-cyan-500/20 selection:text-white">
+    <html lang="en" className={`${inter.variable} scroll-smooth`}>
+      <body className="min-h-screen bg-[#F7F7F2] text-[#17211F] font-sans antialiased selection:bg-[#2AB7A9]/20 selection:text-[#12372A] overflow-x-hidden">
         {children}
       </body>
     </html>
