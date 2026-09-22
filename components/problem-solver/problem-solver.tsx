@@ -1,96 +1,256 @@
 "use client";
 
-import React from "react";
-import { XCircle, CheckCircle2, Zap } from "lucide-react";
+import React, { useState } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Globe,
+  RefreshCw,
+  ShoppingCart,
+  Layers,
+  Sparkles,
+  ArrowRight,
+  CheckCircle2,
+  Cpu,
+} from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/ui/section-header";
-import { ProblemSolutionItem } from "@/types";
+import { cn } from "@/lib/utils";
 
-const COMPARISONS: ProblemSolutionItem[] = [
+interface SolutionOption {
+  id: string;
+  problem: string;
+  icon: React.ElementType;
+  recommendedService: string;
+  explanation: string;
+  deliverables: string[];
+}
+
+const SOLUTION_OPTIONS: SolutionOption[] = [
   {
-    problem: "Unpredictable delivery timelines, missed deadlines, and sudden agency ghosting.",
-    solution: "Structured 2-week agile sprints, milestone deliverables, and transparent communication.",
+    id: "new-website",
+    problem: "I need a new website",
+    icon: Globe,
+    recommendedService: "Bespoke Business Website",
+    explanation:
+      "We design and build a modern, high-speed website from the ground up tailored to establish credibility, showcase your work, and convert visitors into client inquiries.",
+    deliverables: [
+      "Custom responsive design for desktop & mobile",
+      "Sub-second load speed with 95+ Core Web Vitals",
+      "Built-in SEO structure and easy inquiry forms",
+    ],
   },
   {
-    problem: "Bloated template sites with slow loading speeds and messy unmaintainable code.",
-    solution: "Hand-crafted Next.js & TypeScript codebases optimized for 95+ Core Web Vitals and long-term scale.",
+    id: "website-redesign",
+    problem: "My website needs a redesign",
+    icon: RefreshCw,
+    recommendedService: "Complete Website Redesign",
+    explanation:
+      "We overhaul your existing outdated layout into a sleek, high-converting digital experience with modern typography, improved mobile navigation, and faster performance.",
+    deliverables: [
+      "Modern visual makeover matching your brand identity",
+      "Streamlined UX and intuitive navigation paths",
+      "Zero downtime migration and performance upgrade",
+    ],
   },
   {
-    problem: "Outdated generic designs that blend in and fail to convert visitors into clients.",
-    solution: "High-impact futuristic UI/UX with smooth micro-interactions that establish immediate market authority.",
+    id: "online-store",
+    problem: "I need an online store",
+    icon: ShoppingCart,
+    recommendedService: "Modern E-Commerce Solution",
+    explanation:
+      "We build high-converting e-commerce websites with smooth product catalogs, instant search, and secure checkout flows designed to minimize cart abandonment.",
+    deliverables: [
+      "Fast product browsing and category filtering",
+      "Secure payment and automated order notifications",
+      "Mobile-optimized checkout and inventory structure",
+    ],
   },
   {
-    problem: "Complex handovers with no documentation leaving you stuck with developer lock-in.",
-    solution: "Comprehensive codebase documentation, clean architecture, and 100% intellectual property ownership.",
+    id: "web-application",
+    problem: "I need a web application",
+    icon: Layers,
+    recommendedService: "Custom Web App & SaaS MVP",
+    explanation:
+      "From client portals to operational dashboards, we architect full-stack web applications with interactive workflows, secure authentication, and scalable databases.",
+    deliverables: [
+      "Interactive multi-user dashboard interfaces",
+      "Modular database, auth, and API architecture",
+      "Engineered to scale as your active users grow",
+    ],
+  },
+  {
+    id: "custom-idea",
+    problem: "I have a custom idea",
+    icon: Sparkles,
+    recommendedService: "Custom Digital Solution & Strategy",
+    explanation:
+      "Have a unique business concept or specialized workflow? We collaborate directly with you to scope the requirements and build a tailor-made digital solution.",
+    deliverables: [
+      "Direct technical consultation & scope blueprint",
+      "Modular architecture tailored to your specific logic",
+      "Full code ownership with zero developer lock-in",
+    ],
   },
 ];
 
 export function ProblemSolver() {
+  const [selectedId, setSelectedId] = useState<string>(SOLUTION_OPTIONS[0].id);
+
+  const selectedOption =
+    SOLUTION_OPTIONS.find((opt) => opt.id === selectedId) || SOLUTION_OPTIONS[0];
+
   return (
-    <section id="problem-solver" className="py-24 px-4 sm:px-6 lg:px-8 relative bg-gradient-to-b from-transparent via-cyan-950/10 to-transparent">
+    <section
+      id="solutions"
+      className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 relative scroll-mt-16 border-b border-[rgba(23,33,31,0.08)] bg-[#F7F7F2]"
+    >
       <div className="max-w-7xl mx-auto">
         <SectionHeader
-          badge="Why Nuvyra"
-          title="Eliminating Friction,"
-          highlightText="Delivering Certainty"
-          description="Traditional development agencies often leave founders frustrated. Here is how we bridge the gap from concept to execution."
+          badge="Interactive Guidance"
+          badgeVariant="teal"
+          title="What Does Your"
+          highlightText="Business Need?"
+          description="Select your project objective below to see our recommended development approach and concrete deliverables."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
-          {/* Traditional Agency Column */}
-          <Card className="border-red-500/20 bg-red-950/[0.04] p-6 sm:p-8" glowOnHover={false}>
-            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-red-500/20">
-              <div className="p-2 rounded-lg bg-red-500/10 text-red-400">
-                <XCircle className="h-5 w-5" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-200">The Traditional Experience</h3>
-                <p className="text-xs text-slate-400">How typical freelance & agency projects struggle</p>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch max-w-5xl mx-auto">
+          {/* Options Column (Left) */}
+          <div
+            role="radiogroup"
+            aria-label="Select what your business needs"
+            className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3"
+          >
+            {SOLUTION_OPTIONS.map((option) => {
+              const Icon = option.icon;
+              const isSelected = selectedId === option.id;
 
-            <div className="space-y-5">
-              {COMPARISONS.map((item, index) => (
-                <div key={index} className="flex items-start gap-3.5">
-                  <XCircle className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    {item.problem}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Card>
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected}
+                  tabIndex={0}
+                  onClick={() => setSelectedId(option.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setSelectedId(option.id);
+                    }
+                  }}
+                  className={cn(
+                    "w-full text-left px-4 py-3.5 rounded-2xl transition-all duration-300 flex items-center justify-between group cursor-pointer border text-xs sm:text-sm font-medium",
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#168B72]",
+                    isSelected
+                      ? "bg-[#FFFFFF] border-[#168B72] text-[#12372A] shadow-md scale-[1.01]"
+                      : "bg-[#FFFFFF]/70 border-[rgba(23,33,31,0.08)] text-[#5A6966] hover:bg-[#FFFFFF] hover:text-[#17211F] hover:border-[rgba(23,33,31,0.15)] shadow-xs"
+                  )}
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div
+                      className={cn(
+                        "h-9 w-9 rounded-xl flex items-center justify-center transition-all duration-300",
+                        isSelected
+                          ? "bg-[#168B72] text-white shadow-xs"
+                          : "bg-[#F7F7F2] text-[#5A6966] border border-[rgba(23,33,31,0.08)] group-hover:text-[#17211F]"
+                      )}
+                    >
+                      <Icon className="h-4 w-4" />
+                    </div>
+                    <span className="font-semibold">{option.problem}</span>
+                  </div>
 
-          {/* Nuvyra Technologies Column */}
-          <Card className="border-cyan-500/30 bg-cyan-950/[0.08] p-6 sm:p-8 relative overflow-hidden" glowOnHover={true}>
-            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl" />
+                  <div
+                    className={cn(
+                      "h-4 w-4 rounded-full border flex items-center justify-center transition-all",
+                      isSelected
+                        ? "border-[#168B72] bg-[#168B72]"
+                        : "border-[rgba(23,33,31,0.2)] group-hover:border-[rgba(23,33,31,0.4)]"
+                    )}
+                  >
+                    {isSelected && (
+                      <div className="h-1.5 w-1.5 rounded-full bg-white" />
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
 
-            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-cyan-500/20">
-              <div className="p-2 rounded-lg bg-cyan-500/20 text-cyan-400">
-                <Zap className="h-5 w-5" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <span>The Nuvyra Standard</span>
-                  <span className="text-[10px] uppercase font-bold tracking-widest bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-500/30">
-                    Premium
-                  </span>
-                </h3>
-                <p className="text-xs text-cyan-300/70">Engineered for velocity, quality, and real business results</p>
-              </div>
-            </div>
+          {/* Recommendation Output Column (Right) */}
+          <div className="lg:col-span-7 h-full">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedOption.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+                className="h-full"
+              >
+                <Card variant="light" className="p-7 sm:p-9 border-[rgba(23,33,31,0.1)] bg-[#FFFFFF] flex flex-col justify-between h-full relative overflow-hidden shadow-xl">
+                  {/* Subtle Ambient Accent */}
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-[#2AB7A9]/06 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="space-y-5">
-              {COMPARISONS.map((item, index) => (
-                <div key={index} className="flex items-start gap-3.5">
-                  <CheckCircle2 className="h-5 w-5 text-cyan-400 shrink-0 mt-0.5" />
-                  <p className="text-sm text-slate-200 leading-relaxed font-medium">
-                    {item.solution}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Card>
+                  <div className="relative z-10">
+                    {/* Header Tag */}
+                    <div className="flex items-center justify-between pb-4 border-b border-[rgba(23,33,31,0.08)] mb-6">
+                      <div className="flex items-center gap-2 text-xs font-mono font-semibold text-[#168B72] uppercase tracking-wider">
+                        <Cpu className="h-3.5 w-3.5 text-[#168B72]" />
+                        <span>Recommended Solution</span>
+                      </div>
+                      <span className="text-xs text-[#5A6966] font-mono">
+                        Nuvyra Direct Delivery
+                      </span>
+                    </div>
+
+                    <h3 className="text-2xl sm:text-3xl font-extrabold text-[#17211F] mb-3 tracking-tight">
+                      {selectedOption.recommendedService}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-[#5A6966] leading-relaxed mb-6 font-normal">
+                      {selectedOption.explanation}
+                    </p>
+
+                    {/* Deliverables List */}
+                    <div className="space-y-2.5 mb-8 p-4 rounded-2xl bg-[#F7F7F2] border border-[rgba(23,33,31,0.06)]">
+                      <p className="text-[11px] font-mono uppercase tracking-wider text-[#12372A] font-semibold mb-2">
+                        What We Deliver:
+                      </p>
+                      {selectedOption.deliverables.map((item, idx) => (
+                        <div key={idx} className="flex items-center gap-3">
+                          <CheckCircle2 className="h-4 w-4 text-[#168B72] shrink-0" />
+                          <span className="text-xs text-[#17211F] font-medium">
+                            {item}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTA */}
+                  <div className="relative z-10 pt-5 border-t border-[rgba(23,33,31,0.08)] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+                    <Link href="#contact" className="w-full sm:w-auto">
+                      <Button
+                        size="md"
+                        variant="primary"
+                        className="w-full sm:w-auto gap-2 text-xs py-3 px-5 font-semibold shadow-md shadow-[#168B72]/20 animate-shimmer"
+                      >
+                        <span>Let&apos;s discuss your project</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Button>
+                    </Link>
+
+                    <p className="text-[11px] text-[#5A6966] text-center sm:text-left font-mono">
+                      Fast response &bull; Direct consultation
+                    </p>
+                  </div>
+                </Card>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>

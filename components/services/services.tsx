@@ -1,122 +1,256 @@
 "use client";
 
-import React from "react";
-import { 
-  Code2, 
-  Layers, 
-  Sparkles, 
-  Cpu, 
-  Gauge, 
-  GitMerge,
-  ArrowRight
+import React, { useRef, useState, useCallback } from "react";
+import Link from "next/link";
+import { motion, type Variants } from "framer-motion";
+import {
+  Globe,
+  LayoutTemplate,
+  ShoppingCart,
+  Layers,
+  Palette,
+  RefreshCw,
+  Code2,
+  ArrowRight,
+  Sparkles,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
-import { ServiceItem } from "@/types";
 
-const SERVICES: ServiceItem[] = [
+interface ServiceItemData {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ElementType;
+  tag?: string;
+  gridSpan: string;
+  accentBg: string;
+  iconColor: string;
+  badgeAccent?: string;
+}
+
+const SERVICES: ServiceItemData[] = [
   {
-    id: "web-dev",
-    title: "Full-Stack Web Development",
+    id: "business-websites",
+    title: "Business Websites",
     description:
-      "Modern, responsive, and ultra-fast web platforms built with Next.js, React, and TypeScript engineered for performance and SEO.",
-    icon: Code2,
-    tags: ["Next.js", "TypeScript", "Tailwind CSS", "REST/GraphQL"],
+      "Professional, bespoke websites designed to help businesses establish authority, communicate their unique value, and turn first-time visitors into high-value inquiries.",
+    icon: Globe,
+    tag: "Core Offering",
+    gridSpan: "md:col-span-2 lg:col-span-8",
+    accentBg: "from-[#168B72]/10 via-[#2AB7A9]/05 to-transparent",
+    iconColor: "text-[#168B72] bg-[#168B72]/10 border-[#168B72]/25",
+    badgeAccent: "bg-[#168B72]/10 text-[#12372A] border-[#168B72]/30",
   },
   {
-    id: "saas-mvp",
-    title: "SaaS & MVP Engineering",
+    id: "landing-pages",
+    title: "High-Converting Landing Pages",
     description:
-      "Turn your product concept into a market-ready web application with scalable architecture, secure auth, and reliable infrastructure.",
+      "Fast, focused single-page funnels engineered to convert campaign and ad traffic into qualified leads.",
+    icon: LayoutTemplate,
+    gridSpan: "md:col-span-1 lg:col-span-4",
+    accentBg: "from-[#F26B4A]/08 to-transparent",
+    iconColor: "text-[#F26B4A] bg-[#F26B4A]/10 border-[#F26B4A]/25",
+  },
+  {
+    id: "ecommerce-websites",
+    title: "E-Commerce Stores",
+    description:
+      "Modern, fast online stores with fluid catalog browsing, instant search, and streamlined zero-friction checkout experiences.",
+    icon: ShoppingCart,
+    gridSpan: "md:col-span-1 lg:col-span-4",
+    accentBg: "from-[#D6A84B]/08 to-transparent",
+    iconColor: "text-[#9A751F] bg-[#D6A84B]/15 border-[#D6A84B]/30",
+  },
+  {
+    id: "web-applications",
+    title: "Custom Web Applications",
+    description:
+      "Client portals, internal dashboards, and full-stack software built to automate operations and handle complex user workflows.",
     icon: Layers,
-    tags: ["Full-Stack", "Architecture", "Rapid MVP", "Scalable Systems"],
+    tag: "Scalable Architecture",
+    gridSpan: "md:col-span-2 lg:col-span-8",
+    accentBg: "from-[#2AB7A9]/10 via-[#168B72]/05 to-transparent",
+    iconColor: "text-[#2AB7A9] bg-[#2AB7A9]/15 border-[#2AB7A9]/30",
+    badgeAccent: "bg-[#2AB7A9]/15 text-[#12372A] border-[#2AB7A9]/35",
   },
   {
-    id: "ui-ux",
-    title: "UI/UX & Design Engineering",
+    id: "portfolio-websites",
+    title: "Portfolio & Agency Sites",
     description:
-      "Futuristic, intuitive interfaces with micro-interactions, dark mode aesthetics, and design systems that elevate your brand.",
-    icon: Sparkles,
-    tags: ["Design Systems", "Framer Motion", "Prototyping", "Aesthetics"],
+      "Clean, editorial platforms crafted for agencies, consultants, and professionals to showcase their work with impact.",
+    icon: Palette,
+    gridSpan: "md:col-span-1 lg:col-span-4",
+    accentBg: "from-[#12372A]/05 to-transparent",
+    iconColor: "text-[#12372A] bg-[#12372A]/10 border-[#12372A]/20",
   },
   {
-    id: "cloud-api",
-    title: "Cloud & Backend Architecture",
+    id: "website-redesign",
+    title: "Website Redesign & Modernization",
     description:
-      "Robust backends, database schema design, third-party integrations, and serverless architectures with high availability.",
-    icon: Cpu,
-    tags: ["Cloud Infrastructure", "Microservices", "API Integrations"],
+      "Overhaul outdated layouts with contemporary typography, sub-second performance, and conversion-first user journeys.",
+    icon: RefreshCw,
+    gridSpan: "md:col-span-1 lg:col-span-4",
+    accentBg: "from-[#F26B4A]/08 to-transparent",
+    iconColor: "text-[#F26B4A] bg-[#F26B4A]/10 border-[#F26B4A]/25",
   },
   {
-    id: "performance",
-    title: "Speed & Conversion Optimization",
+    id: "custom-digital-solutions",
+    title: "Custom Digital Solutions",
     description:
-      "Auditing and upgrading slow web apps to achieve 95+ Google Lighthouse scores, lower bounce rates, and boost conversion metrics.",
-    icon: Gauge,
-    tags: ["Core Web Vitals", "SEO Audit", "Caching", "Performance"],
-  },
-  {
-    id: "tech-consulting",
-    title: "Technical Advisory & Code Audits",
-    description:
-      "Strategic tech stack selection, codebase refactoring, security reviews, and ongoing developer mentorship for tech teams.",
-    icon: GitMerge,
-    tags: ["Code Quality", "Architecture Review", "Strategy"],
+      "Tailor-made digital tools, API integrations, and specialized software systems engineered around your exact workflow.",
+    icon: Code2,
+    gridSpan: "md:col-span-2 lg:col-span-4",
+    accentBg: "from-[#D6A84B]/08 to-transparent",
+    iconColor: "text-[#9A751F] bg-[#D6A84B]/15 border-[#D6A84B]/30",
   },
 ];
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.09,
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.21, 0.47, 0.32, 0.98],
+    },
+  },
+};
+
+/* ─── Interactive Card Tilt Hook ─── */
+function useTiltCard() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ rotateX: -y * 4, rotateY: x * 4 });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setTilt({ rotateX: 0, rotateY: 0 });
+  }, []);
+
+  return { ref, tilt, handleMouseMove, handleMouseLeave };
+}
+
+function ServiceCard({ service }: { service: ServiceItemData }) {
+  const Icon = service.icon;
+  const { ref, tilt, handleMouseMove, handleMouseLeave } = useTiltCard();
+
+  return (
+    <motion.div
+      variants={cardVariants}
+      className={service.gridSpan}
+    >
+      <Link
+        href="#contact"
+        className="block h-full group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#168B72] rounded-2xl"
+      >
+        <div
+          ref={ref}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{
+            transform: `perspective(800px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)`,
+            transition: "transform 0.2s ease-out",
+          }}
+          className="h-full"
+        >
+          <Card
+            variant="light"
+            className="relative flex flex-col justify-between h-full p-6 sm:p-8 bg-[#FFFFFF] border-[rgba(23,33,31,0.09)] group-hover:border-[#168B72]/50 group-hover:shadow-[0_16px_36px_-8px_rgba(22,139,114,0.15)] group-hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+            glowOnHover={false}
+          >
+            {/* Subtle Ambient Hover Gradient Mesh */}
+            <div
+              aria-hidden="true"
+              className={`absolute inset-0 bg-gradient-to-br ${service.accentBg} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}
+            />
+
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-6">
+                <div className={`h-11 w-11 rounded-2xl border flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-xs ${service.iconColor}`}>
+                  <Icon className="h-5 w-5" />
+                </div>
+
+                {service.tag ? (
+                  <span className={`inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider border transition-transform duration-200 group-hover:scale-105 ${service.badgeAccent}`}>
+                    <Sparkles className="h-2.5 w-2.5" />
+                    {service.tag}
+                  </span>
+                ) : (
+                  <span className="text-xs font-semibold text-[#5A6966] group-hover:text-[#168B72] flex items-center gap-1.5 transition-colors">
+                    <span>Discuss</span>
+                    <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1.5 transition-transform duration-200" />
+                  </span>
+                )}
+              </div>
+
+              <h3 className="text-lg sm:text-xl font-bold text-[#17211F] mb-2.5 tracking-tight group-hover:text-[#12372A] transition-colors">
+                {service.title}
+              </h3>
+
+              <p className="text-xs sm:text-sm text-[#5A6966] leading-relaxed font-normal">
+                {service.description}
+              </p>
+            </div>
+
+            {/* Bottom Indicator */}
+            <div className="relative z-10 mt-6 pt-4 border-t border-[rgba(23,33,31,0.06)] flex items-center justify-between text-[11px] text-[#5A6966] font-mono">
+              <span>Production-Ready</span>
+              <span className="text-[#168B72] font-semibold group-hover:text-[#12372A] group-hover:translate-x-0.5 transition-all duration-200">
+                Nuvyra Standards &rarr;
+              </span>
+            </div>
+          </Card>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
 export function Services() {
   return (
-    <section id="services" className="py-24 px-4 sm:px-6 lg:px-8 relative">
+    <section
+      id="services"
+      className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 relative scroll-mt-16 border-b border-[rgba(23,33,31,0.08)] bg-[#FFFFFF]"
+    >
       <div className="max-w-7xl mx-auto">
         <SectionHeader
-          badge="Our Capabilities"
-          title="Engineered For"
-          highlightText="Growth & Scale"
-          description="We deliver end-to-end digital solutions tailored to solve complex business problems with clean code and cutting-edge design."
+          badge="Our Services"
+          badgeVariant="emerald"
+          title="What We Can"
+          highlightText="Build For You"
+          description="Client-focused digital engineering tailored to solve real business needs, win customer trust, and generate continuous inquiries."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {SERVICES.map((service) => {
-            const Icon = service.icon;
-            return (
-              <Card
-                key={service.id}
-                className="group flex flex-col justify-between h-full hover:border-cyan-500/40 relative overflow-hidden"
-              >
-                {/* Subtle top corner gradient */}
-                <div className="absolute top-0 right-0 w-28 h-28 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/15 transition-all duration-300" />
-
-                <div>
-                  <div className="h-12 w-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300">
-                    <Icon className="h-6 w-6" />
-                  </div>
-
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
-                    {service.title}
-                  </h3>
-
-                  <p className="text-sm text-slate-400 leading-relaxed mb-6">
-                    {service.description}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-white/5">
-                  <div className="flex flex-wrap gap-1.5">
-                    {service.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[11px] font-mono px-2 py-0.5 rounded bg-white/[0.04] text-slate-300 border border-white/5"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
+        {/* Bento Grid with Tilt Hover and Staggered Entrance */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6"
+        >
+          {SERVICES.map((service) => (
+            <ServiceCard key={service.id} service={service} />
+          ))}
+        </motion.div>
       </div>
     </section>
   );
