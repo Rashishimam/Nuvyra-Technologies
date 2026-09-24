@@ -79,7 +79,7 @@ export function Navbar() {
             className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#168B72] rounded-xl p-1 -m-1"
           >
             <Image
-              src="/images/nuvyra-logo-clean.png"
+              src="/images/nuvyra-logo.png"
               alt="Nuvyra Technologies Logo"
               width={180}
               height={44}
