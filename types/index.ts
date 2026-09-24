@@ -39,3 +39,26 @@ export interface TeamMember {
   description: string;
   focus: string[];
 }
+
+// ─── Backend / Inquiry Types ─────────────────────────────────
+
+export type InquiryStatus =
+  | "new"
+  | "contacted"
+  | "in_progress"
+  | "completed"
+  | "rejected";
+
+export interface Inquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  company: string | null;
+  service: string;
+  budget: string | null;
+  message: string;
+  status: InquiryStatus;
+  created_at: string;
+  updated_at: string;
+}
