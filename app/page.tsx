@@ -3,10 +3,8 @@ import { Hero } from "@/components/hero/hero";
 import { ProblemCallout } from "@/components/problem-solver/problem-callout";
 import { Services } from "@/components/services/services";
 import { ProblemSolver } from "@/components/problem-solver/problem-solver";
-import { About } from "@/components/about/about";
 import { Team } from "@/components/team/team";
 import { Process } from "@/components/process/process";
-import { Portfolio } from "@/components/portfolio/portfolio";
 import { BeforeAfter } from "@/components/before-after/before-after";
 import { Contact } from "@/components/contact/contact";
 import { Footer } from "@/components/footer/footer";
@@ -28,15 +26,13 @@ export default function Home() {
         {/* LIGHT SOLUTIONS */}
         <ProblemSolver />
 
-        {/* DARK ABOUT & TEAM */}
-        <About />
+        {/* DARK TEAM */}
         <Team />
 
         {/* LIGHT PROCESS */}
         <Process />
 
-        {/* MIXED PROJECTS */}
-        <Portfolio />
+        {/* BEFORE & AFTER SHOWCASE */}
         <BeforeAfter />
 
         {/* DARK GREEN CONTACT WITH LIGHT FORM */}

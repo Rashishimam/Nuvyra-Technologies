@@ -58,17 +58,11 @@ export function Footer() {
             <Link href="#solutions" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
               Solutions
             </Link>
-            <Link href="#work" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
-              Selected Work
-            </Link>
             <Link href="#process" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
               Our Process
             </Link>
             <Link href="#team" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
               Our Team
-            </Link>
-            <Link href="#about" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
-              About Nuvyra
             </Link>
           </div>
 
