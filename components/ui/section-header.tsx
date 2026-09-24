@@ -14,6 +14,8 @@ interface SectionHeaderProps {
   align?: "left" | "center";
   theme?: "light" | "dark";
   className?: string;
+  titleClassName?: string;
+  descriptionClassName?: string;
 }
 
 export function SectionHeader({
@@ -25,6 +27,8 @@ export function SectionHeader({
   align = "center",
   theme = "light",
   className,
+  titleClassName,
+  descriptionClassName,
 }: SectionHeaderProps) {
   const isDark = theme === "dark";
 
@@ -60,7 +64,8 @@ export function SectionHeader({
       <h2
         className={cn(
           "text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.15]",
-          isDark ? "text-[#F8FAF9]" : "text-[#17211F]"
+          isDark ? "text-[#F8FAF9]" : "text-[#17211F]",
+          titleClassName
         )}
       >
         {title}{" "}
@@ -74,7 +79,8 @@ export function SectionHeader({
         <p
           className={cn(
             "text-sm sm:text-base leading-relaxed font-normal max-w-2xl",
-            isDark ? "text-[#C2CEC9]" : "text-[#5A6966]"
+            isDark ? "text-[#C2CEC9]" : "text-[#5A6966]",
+            descriptionClassName
           )}
         >
           {description}

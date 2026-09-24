@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight, Sparkles, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { NuvyraLogo } from "@/components/ui/logo";
 import { cn } from "@/lib/utils";
 import { NavItem } from "@/types";
 
@@ -12,6 +14,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Services", href: "#services" },
   { label: "Solutions", href: "#solutions" },
   { label: "Process", href: "#process" },
+  { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -72,25 +75,23 @@ export function Navbar() {
           {/* Brand Logo */}
           <Link
             href="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#168B72] rounded-xl p-1 -m-1"
           >
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#12372A] to-[#168B72] border border-[#168B72]/30 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_15px_rgba(22,139,114,0.3)] shadow-xs">
-              <Sparkles className="h-4 w-4 text-[#F8FAF9] group-hover:rotate-12 transition-transform duration-300" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-extrabold tracking-wider text-[#17211F] group-hover:text-[#168B72] transition-colors">
-                NUVYRA
-              </span>
-              <span className="text-[9px] tracking-[0.25em] text-[#5A6966] uppercase font-mono font-semibold -mt-0.5">
-                TECHNOLOGIES
-              </span>
-            </div>
+            <Image
+              src="/images/nuvyra-logo-clean.png"
+              alt="Nuvyra Technologies Logo"
+              width={180}
+              height={44}
+              priority
+              className="h-8 sm:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+            />
           </Link>
 
           {/* Desktop Navigation Links with Animated Underline */}
           <nav
             aria-label="Main Navigation"
-            className="hidden md:flex items-center gap-1 px-4 py-1.5 rounded-full bg-[#FFFFFF]/85 border border-[rgba(23,33,31,0.08)] backdrop-blur-md shadow-xs"
+            className="hidden md:flex items-center gap-0.5 px-3 py-1.5 rounded-full bg-[#FFFFFF]/85 border border-[rgba(23,33,31,0.08)] backdrop-blur-md shadow-xs"
           >
             {NAV_ITEMS.map((item) => {
               const isActive = activeSection === item.href;
@@ -101,7 +102,7 @@ export function Navbar() {
                   onMouseEnter={() => setHoveredItem(item.href)}
                   onMouseLeave={() => setHoveredItem(null)}
                   className={cn(
-                    "text-xs font-medium px-4 py-1.5 rounded-full transition-colors duration-200 relative focus:outline-none focus-visible:text-[#168B72]",
+                    "text-sm font-medium px-3.5 py-1.5 rounded-full transition-colors duration-200 relative focus:outline-none focus-visible:text-[#168B72] text-center",
                     isActive
                       ? "text-[#12372A] font-bold"
                       : "text-[#5A6966] hover:text-[#17211F]"
@@ -132,16 +133,15 @@ export function Navbar() {
 
           {/* Primary Emerald CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Link href="#contact">
-              <Button
-                size="sm"
-                variant="primary"
-                className="gap-2 font-semibold text-xs tracking-wide py-2 px-4 shadow-[0_4px_14px_rgba(22,139,114,0.25)] animate-shimmer"
-              >
-                <span>Start a Project</span>
-                <ArrowUpRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
-              </Button>
-            </Link>
+            <Button
+              href="#contact"
+              size="sm"
+              variant="primary"
+              className="gap-2 font-semibold text-xs tracking-wide py-2 px-4 shadow-[0_4px_14px_rgba(22,139,114,0.25)] animate-shimmer"
+            >
+              <span>Start a Project</span>
+              <ArrowUpRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+            </Button>
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -179,7 +179,7 @@ export function Navbar() {
                   <Link
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="px-4 py-3 text-sm font-medium text-[#17211F] hover:text-[#168B72] hover:bg-[#F7F7F2] rounded-xl transition-all flex items-center justify-between border border-transparent hover:border-[rgba(23,33,31,0.06)]"
+                    className="px-4 py-3 text-base font-medium text-[#17211F] hover:text-[#168B72] hover:bg-[#F7F7F2] rounded-xl transition-all flex items-center justify-between border border-transparent hover:border-[rgba(23,33,31,0.06)]"
                   >
                     <span>{item.label}</span>
                     <ChevronRight className="h-4 w-4 text-[#5A6966]" />
@@ -188,12 +188,16 @@ export function Navbar() {
               ))}
             </nav>
             <div className="pt-2 border-t border-[rgba(23,33,31,0.08)]">
-              <Link href="#contact" onClick={() => setMobileMenuOpen(false)}>
-                <Button size="md" variant="primary" className="w-full gap-2 font-semibold text-xs py-3">
-                  <span>Start a Project</span>
-                  <ArrowUpRight className="h-4 w-4" />
-                </Button>
-              </Link>
+              <Button
+                href="#contact"
+                size="md"
+                variant="primary"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full gap-2 font-semibold text-xs py-3"
+              >
+                <span>Start a Project</span>
+                <ArrowUpRight className="h-4 w-4" />
+              </Button>
             </div>
           </motion.div>
         )}

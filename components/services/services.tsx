@@ -152,6 +152,17 @@ function ServiceCard({ service }: { service: ServiceItemData }) {
   const Icon = service.icon;
   const { ref, tilt, handleMouseMove, handleMouseLeave } = useTiltCard();
 
+  const handleScrollToContact = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const contactElement = document.getElementById("contact");
+    if (contactElement) {
+      contactElement.scrollIntoView({ behavior: "smooth" });
+      window.history.pushState(null, "", "#contact");
+    } else {
+      window.location.hash = "#contact";
+    }
+  };
+
   return (
     <motion.div
       variants={cardVariants}
@@ -159,7 +170,8 @@ function ServiceCard({ service }: { service: ServiceItemData }) {
     >
       <Link
         href="#contact"
-        className="block h-full group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#168B72] rounded-2xl"
+        onClick={handleScrollToContact}
+        className="block h-full group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#168B72] rounded-2xl cursor-pointer"
       >
         <div
           ref={ref}
@@ -173,7 +185,7 @@ function ServiceCard({ service }: { service: ServiceItemData }) {
         >
           <Card
             variant="light"
-            className="relative flex flex-col justify-between h-full p-6 sm:p-8 bg-[#FFFFFF] border-[rgba(23,33,31,0.09)] group-hover:border-[#168B72]/50 group-hover:shadow-[0_16px_36px_-8px_rgba(22,139,114,0.15)] group-hover:-translate-y-1.5 transition-all duration-300 overflow-hidden"
+            className="relative flex flex-col justify-between h-full p-5 sm:p-6 bg-[#FFFFFF] border-[rgba(23,33,31,0.09)] group-hover:border-[#168B72]/50 group-hover:shadow-[0_16px_36px_-8px_rgba(22,139,114,0.15)] group-hover:-translate-y-1.5 transition-all duration-300 overflow-hidden cursor-pointer"
             glowOnHover={false}
           >
             {/* Subtle Ambient Hover Gradient Mesh */}
@@ -183,38 +195,34 @@ function ServiceCard({ service }: { service: ServiceItemData }) {
             />
 
             <div className="relative z-10">
-              <div className="flex items-center justify-between mb-6">
-                <div className={`h-11 w-11 rounded-2xl border flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-xs ${service.iconColor}`}>
+              <div className="flex items-center justify-between mb-4 sm:mb-5">
+                <div className={`h-10 w-10 sm:h-11 sm:w-11 rounded-2xl border flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-xs ${service.iconColor}`}>
                   <Icon className="h-5 w-5" />
                 </div>
 
-                {service.tag ? (
+                {service.tag && (
                   <span className={`inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider border transition-transform duration-200 group-hover:scale-105 ${service.badgeAccent}`}>
                     <Sparkles className="h-2.5 w-2.5" />
                     {service.tag}
                   </span>
-                ) : (
-                  <span className="text-xs font-semibold text-[#5A6966] group-hover:text-[#168B72] flex items-center gap-1.5 transition-colors">
-                    <span>Discuss</span>
-                    <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1.5 transition-transform duration-200" />
-                  </span>
                 )}
               </div>
 
-              <h3 className="text-lg sm:text-xl font-bold text-[#17211F] mb-2.5 tracking-tight group-hover:text-[#12372A] transition-colors">
+              <h3 className="text-base sm:text-lg font-bold text-[#17211F] mb-2 tracking-tight group-hover:text-[#12372A] transition-colors">
                 {service.title}
               </h3>
 
-              <p className="text-xs sm:text-sm text-[#5A6966] leading-relaxed font-normal">
+              <p className="text-[13px] sm:text-sm text-[#5A6966] leading-relaxed font-normal">
                 {service.description}
               </p>
             </div>
 
             {/* Bottom Indicator */}
-            <div className="relative z-10 mt-6 pt-4 border-t border-[rgba(23,33,31,0.06)] flex items-center justify-between text-[11px] text-[#5A6966] font-mono">
-              <span>Production-Ready</span>
-              <span className="text-[#168B72] font-semibold group-hover:text-[#12372A] group-hover:translate-x-0.5 transition-all duration-200">
-                Nuvyra Standards &rarr;
+            <div className="relative z-10 mt-4 pt-3.5 border-t border-[rgba(23,33,31,0.06)] flex items-center justify-between text-[11px] font-mono">
+              <span className="text-[#5A6966]">Production-Ready</span>
+              <span className="text-[#168B72] font-semibold group-hover:text-[#12372A] flex items-center gap-1 transition-all duration-200 cursor-pointer">
+                <span>Discuss</span>
+                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-200" />
               </span>
             </div>
           </Card>
@@ -228,7 +236,7 @@ export function Services() {
   return (
     <section
       id="services"
-      className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 relative scroll-mt-16 border-b border-[rgba(23,33,31,0.08)] bg-[#FFFFFF]"
+      className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 relative scroll-mt-20 border-b border-[rgba(23,33,31,0.08)] bg-[#F7F7F2]"
     >
       <div className="max-w-7xl mx-auto">
         <SectionHeader
@@ -237,6 +245,7 @@ export function Services() {
           title="What We Can"
           highlightText="Build For You"
           description="Client-focused digital engineering tailored to solve real business needs, win customer trust, and generate continuous inquiries."
+          className="mb-8 sm:mb-10"
         />
 
         {/* Bento Grid with Tilt Hover and Staggered Entrance */}

@@ -104,7 +104,7 @@ export function ProblemSolver() {
   return (
     <section
       id="solutions"
-      className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 relative scroll-mt-16 border-b border-[rgba(23,33,31,0.08)] bg-[#F7F7F2]"
+      className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 relative scroll-mt-20 border-b border-[rgba(23,33,31,0.08)] bg-[#F7F7F2]"
     >
       <div className="max-w-7xl mx-auto">
         <SectionHeader
@@ -113,6 +113,7 @@ export function ProblemSolver() {
           title="What Does Your"
           highlightText="Business Need?"
           description="Select your project objective below to see our recommended development approach and concrete deliverables."
+          className="mb-8 sm:mb-10"
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch max-w-5xl mx-auto">
@@ -210,7 +211,7 @@ export function ProblemSolver() {
                       {selectedOption.recommendedService}
                     </h3>
 
-                    <p className="text-xs sm:text-sm text-[#5A6966] leading-relaxed mb-6 font-normal">
+                    <p className="text-sm sm:text-base text-[#5A6966] leading-relaxed mb-6 font-normal">
                       {selectedOption.explanation}
                     </p>
 
@@ -222,7 +223,7 @@ export function ProblemSolver() {
                       {selectedOption.deliverables.map((item, idx) => (
                         <div key={idx} className="flex items-center gap-3">
                           <CheckCircle2 className="h-4 w-4 text-[#168B72] shrink-0" />
-                          <span className="text-xs text-[#17211F] font-medium">
+                          <span className="text-xs sm:text-sm text-[#17211F] font-medium">
                             {item}
                           </span>
                         </div>
@@ -232,16 +233,15 @@ export function ProblemSolver() {
 
                   {/* CTA */}
                   <div className="relative z-10 pt-5 border-t border-[rgba(23,33,31,0.08)] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-                    <Link href="#contact" className="w-full sm:w-auto">
-                      <Button
-                        size="md"
-                        variant="primary"
-                        className="w-full sm:w-auto gap-2 text-xs py-3 px-5 font-semibold shadow-md shadow-[#168B72]/20 animate-shimmer"
-                      >
-                        <span>Let&apos;s discuss your project</span>
-                        <ArrowRight className="h-3.5 w-3.5" />
-                      </Button>
-                    </Link>
+                    <Button
+                      href="#contact"
+                      size="md"
+                      variant="primary"
+                      className="w-full sm:w-auto gap-2 text-xs py-3 px-5 font-semibold shadow-md shadow-[#168B72]/20 animate-shimmer"
+                    >
+                      <span>Start a Project</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Button>
 
                     <p className="text-[11px] text-[#5A6966] text-center sm:text-left font-mono">
                       Fast response &bull; Direct consultation

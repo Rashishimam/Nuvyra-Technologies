@@ -2,16 +2,10 @@
 
 import React from "react";
 import Link from "next/link";
-import { Sparkles, ArrowUp, Mail, MessageCircle } from "lucide-react";
+import Image from "next/image";
+import { Sparkles, Mail, MessageCircle } from "lucide-react";
 
 export function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
   return (
     <footer className="border-t border-white/10 bg-[#18201F] text-[#F8FAF9] py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Ambient background glow */}
@@ -27,12 +21,13 @@ export function Footer() {
               href="/"
               className="flex items-center gap-3 mb-4 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#168B72] rounded-xl p-1 -m-1"
             >
-              <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#12372A] to-[#168B72] border border-[#2AB7A9]/30 flex items-center justify-center text-[#F8FAF9] group-hover:border-[#2AB7A9] transition-colors">
-                <Sparkles className="h-4 w-4 text-[#2AB7A9]" />
-              </div>
-              <span className="text-sm font-extrabold tracking-wider text-[#F8FAF9] group-hover:text-white transition-colors">
-                NUVYRA TECHNOLOGIES
-              </span>
+              <Image
+                src="/images/nuvyra-logo-clean.png"
+                alt="Nuvyra Technologies Logo"
+                width={180}
+                height={44}
+                className="h-8 sm:h-9 w-auto object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity"
+              />
             </Link>
 
             <p className="text-xs text-[#C2CEC9] leading-relaxed max-w-sm mb-4 font-normal">
@@ -52,11 +47,11 @@ export function Footer() {
             <Link href="/" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
               Home
             </Link>
+            <Link href="#about" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
+              About Nuvyra
+            </Link>
             <Link href="#services" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
               Services
-            </Link>
-            <Link href="#solutions" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
-              Solutions
             </Link>
             <Link href="#process" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
               Our Process
@@ -112,27 +107,25 @@ export function Footer() {
               <MessageCircle className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
               <span>Chat on WhatsApp &rarr;</span>
             </a>
-            <Link
+            <a
               href="#contact"
-              className="mt-2 text-xs font-semibold text-[#2AB7A9] hover:text-white transition-colors inline-block"
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.getElementById("contact");
+                if (element) {
+                  element.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              className="mt-2 text-xs font-semibold text-[#2AB7A9] hover:text-white transition-colors inline-block cursor-pointer"
             >
               Start a Project &rarr;
-            </Link>
+            </a>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#C2CEC9]">
           <p>&copy; {new Date().getFullYear()} Nuvyra Technologies. All rights reserved.</p>
-
-          <button
-            onClick={scrollToTop}
-            aria-label="Back to top"
-            className="flex items-center gap-2 text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors cursor-pointer py-1 px-3 rounded-full bg-[#12372A] border border-white/10"
-          >
-            <span>Back to top</span>
-            <ArrowUp className="h-3.5 w-3.5" />
-          </button>
         </div>
       </div>
     </footer>
