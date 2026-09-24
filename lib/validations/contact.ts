@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 /**
- * Allowed service options — must match the frontend `SERVICE_OPTIONS` array
- * in components/contact/contact.tsx.
+ * Allowed service options — matches frontend SERVICE_OPTIONS in components/contact/contact.tsx.
+ * Normalized to support standard and typographic quotation marks / dashes.
  */
 export const ALLOWED_SERVICES = [
   "Business Website",
@@ -12,19 +12,20 @@ export const ALLOWED_SERVICES = [
   "Portfolio Website",
   "Website Redesign",
   "Custom Digital Solution",
-  "Not Sure — Let\u2019s Discuss",
+  "Not Sure — Let's Discuss",
+  "Not Sure — Let’s Discuss",
 ] as const;
 
 /**
- * Allowed budget options — must match the frontend `BUDGET_OPTIONS` array
- * in components/contact/contact.tsx.
+ * Allowed budget options — matches frontend BUDGET_OPTIONS in components/contact/contact.tsx.
  */
 export const ALLOWED_BUDGETS = [
-  "\u20B92,000 \u2013 \u20B95,000",
-  "\u20B95,000 \u2013 \u20B910,000",
-  "\u20B910,000 \u2013 \u20B915,000",
-  "\u20B915,000+",
-  "Not sure \u2014 Let\u2019s Discuss",
+  "₹2,000 – ₹5,000",
+  "₹5,000 – ₹10,000",
+  "₹10,000 – ₹15,000",
+  "₹15,000+",
+  "Not sure — Let's Discuss",
+  "Not sure — Let’s Discuss",
 ] as const;
 
 /**
@@ -36,9 +37,6 @@ function sanitize(input: string): string {
 
 /**
  * Zod schema for the contact/inquiry form.
- *
- * The frontend sends `description` but the database column is `message`.
- * This schema accepts `description` and transforms it into the validated output.
  */
 export const contactFormSchema = z
   .object({
@@ -58,7 +56,7 @@ export const contactFormSchema = z
 
     phone: z
       .string()
-      .max(20, "Phone number must be 20 characters or less.")
+      .max(30, "Phone number must be 30 characters or less.")
       .transform(sanitize)
       .optional()
       .default(""),
@@ -70,15 +68,31 @@ export const contactFormSchema = z
       .optional()
       .default(""),
 
-    service: z.enum(ALLOWED_SERVICES, {
-      message: "Please select a valid service.",
-    }),
+    service: z
+      .string()
+      .min(1, "Please select a service.")
+      .transform(sanitize)
+      .refine(
+        (val) => {
+          const normalized = val.replace(/’/g, "'");
+          return ALLOWED_SERVICES.some((s) => s.replace(/’/g, "'") === normalized);
+        },
+        { message: "Please select a valid service option." }
+      ),
 
-    budget: z.enum(ALLOWED_BUDGETS, {
-      message: "Please select a valid budget range.",
-    }),
+    budget: z
+      .string()
+      .min(1, "Please select an estimated budget.")
+      .transform(sanitize)
+      .refine(
+        (val) => {
+          const normalized = val.replace(/’/g, "'");
+          return ALLOWED_BUDGETS.some((b) => b.replace(/’/g, "'") === normalized);
+        },
+        { message: "Please select a valid budget range." }
+      ),
 
-    // The frontend field is called "description" but we map it to "message"
+    // The frontend field is called "description", mapped to "message"
     description: z
       .string()
       .min(1, "Please describe your project details or goals.")
@@ -98,13 +112,10 @@ export const contactFormSchema = z
     email: data.email,
     phone: data.phone,
     company: data.company,
-    service: data.service,
-    budget: data.budget,
+    service: data.service.replace(/’/g, "'"),
+    budget: data.budget.replace(/’/g, "'"),
     message: data.description, // map description → message
     honeypot: data.honeypot,
   }));
 
-/**
- * The validated + transformed output type from the contact form schema.
- */
 export type ContactFormData = z.output<typeof contactFormSchema>;
