@@ -63,7 +63,7 @@ const itemVariants: Variants = {
 
 export function ProblemCallout() {
   return (
-    <section className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 relative border-b border-[rgba(23,33,31,0.08)] bg-[#FFFFFF] overflow-hidden">
+    <section className="py-14 sm:py-20 px-4 sm:px-6 lg:px-8 relative border-b border-[rgba(23,33,31,0.08)] bg-[#FFFFFF] overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <SectionHeader
           badge="YOUR WEBSITE MATTERS"
@@ -71,7 +71,7 @@ export function ProblemCallout() {
           title="Your Website Is Your"
           highlightText="First Impression."
           description="Give your customers a reason to trust your business from the moment they find you online."
-          className="mb-12 sm:mb-16"
+          className="mb-8 sm:mb-10"
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center max-w-6xl mx-auto">
@@ -212,7 +212,7 @@ export function ProblemCallout() {
                       <h4 className="text-sm font-semibold text-[#17211F] group-hover/item:text-[#12372A] transition-colors">
                         {item.title}
                       </h4>
-                      <p className="text-xs text-[#5A6966] leading-relaxed font-normal mt-0.5">
+                      <p className="text-xs sm:text-sm text-[#5A6966] leading-relaxed font-normal mt-0.5">
                         {item.detail}
                       </p>
                     </div>
@@ -224,24 +224,22 @@ export function ProblemCallout() {
             {/* CTA Container */}
             <div className="pt-6 border-t border-[rgba(23,33,31,0.08)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <p className="text-xs text-[#5A6966] font-medium">
+                <p className="text-xs sm:text-sm text-[#5A6966] font-medium">
                   Need a better online presence?
                 </p>
                 <Link
-                  href="#work"
+                  href="#services"
                   className="text-xs font-semibold text-[#168B72] hover:text-[#12372A] inline-flex items-center gap-1.5 transition-colors mt-0.5"
                 >
-                  <span>See Our Work</span>
+                  <span>Explore Services</span>
                   <ExternalLink className="h-3 w-3" />
                 </Link>
               </div>
 
-              <Link href="#contact" className="w-full sm:w-auto">
-                <Button size="md" variant="primary" className="w-full sm:w-auto gap-2 text-xs font-semibold py-2.5 px-5 shadow-md shadow-[#168B72]/20 animate-shimmer">
-                  <span>Build My Website</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Button>
-              </Link>
+              <Button href="#contact" size="md" variant="primary" className="w-full sm:w-auto gap-2 text-xs font-semibold py-2.5 px-5 shadow-md shadow-[#168B72]/20 animate-shimmer">
+                <span>Start a Project</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Button>
             </div>
           </div>
         </div>

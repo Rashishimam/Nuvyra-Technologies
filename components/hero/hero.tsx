@@ -91,7 +91,7 @@ export function Hero() {
   }, [isDesktop, mouseX, mouseY]);
 
   return (
-    <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-32 px-4 sm:px-6 lg:px-8 border-b border-[rgba(23,33,31,0.08)] overflow-hidden bg-[#F7F7F2]">
+    <section id="top" className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 px-4 sm:px-6 lg:px-8 border-b border-[rgba(23,33,31,0.08)] overflow-hidden bg-[#F7F7F2]">
       {/* Continuous Ambient Floating Background Shapes */}
       <div
         aria-hidden="true"
@@ -156,18 +156,24 @@ export function Hero() {
               transition={{ duration: 0.5, delay: 0.48, ease: [0.16, 1, 0.3, 1] }}
               className="mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto"
             >
-              <Link href="#contact" className="w-full sm:w-auto">
-                <Button size="lg" variant="primary" className="w-full sm:w-auto gap-2.5 font-semibold text-sm py-3.5 px-7 animate-shimmer">
-                  <span>Start a Project</span>
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
-                </Button>
-              </Link>
+              <Button
+                href="#contact"
+                size="lg"
+                variant="primary"
+                className="w-full sm:w-auto gap-2.5 font-semibold text-sm py-3.5 px-7 animate-shimmer"
+              >
+                <span>Start a Project</span>
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+              </Button>
 
-              <Link href="#work" className="w-full sm:w-auto">
-                <Button size="lg" variant="secondary" className="w-full sm:w-auto font-medium text-sm py-3.5 px-7">
-                  <span>View Our Work</span>
-                </Button>
-              </Link>
+              <Button
+                href="#work"
+                size="lg"
+                variant="secondary"
+                className="w-full sm:w-auto font-medium text-sm py-3.5 px-7"
+              >
+                <span>View Our Work</span>
+              </Button>
             </motion.div>
 
             {/* 5. Trust-Oriented Line & Proof Points */}

@@ -18,7 +18,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 
 export function BeforeAfter() {
   return (
-    <section className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 relative scroll-mt-16 border-b border-[rgba(23,33,31,0.08)] bg-[#F7F7F2]">
+    <section id="work" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 relative scroll-mt-20 border-b border-[rgba(23,33,31,0.08)] bg-[#F7F7F2]">
       <div className="max-w-7xl mx-auto">
         <SectionHeader
           badge="Website Redesign"
@@ -26,7 +26,7 @@ export function BeforeAfter() {
           title="See What a Better Website"
           highlightText="Can Look Like"
           description="From a confusing online presence to a cleaner, more authoritative client experience."
-          className="mb-12 sm:mb-16"
+          className="mb-8 sm:mb-10"
         />
 
         {/* Side-by-Side Comparison Container */}
@@ -34,10 +34,10 @@ export function BeforeAfter() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             {/* ================= LEFT: BEFORE (CLUTTERED / OUTDATED) ================= */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-5 flex flex-col h-full"
             >
               <div className="flex items-center justify-between mb-3 px-1">
@@ -121,7 +121,13 @@ export function BeforeAfter() {
             </motion.div>
 
             {/* ================= CENTER: TRANSITION INDICATOR ================= */}
-            <div className="lg:col-span-2 flex flex-col items-center justify-center py-4 lg:py-0">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-2 flex flex-col items-center justify-center py-4 lg:py-0"
+            >
               <div className="flex flex-col items-center gap-2.5">
                 <div className="h-12 w-12 rounded-2xl bg-[#12372A] border border-[#168B72]/30 flex items-center justify-center text-white shadow-md">
                   <ArrowRightLeft className="h-5 w-5" />
@@ -135,14 +141,14 @@ export function BeforeAfter() {
                   </span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* ================= RIGHT: AFTER (CLEAN / HIGH-CONVERTING) ================= */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.4, delay: 0.1 }}
+              transition={{ duration: 0.55, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-5 flex flex-col h-full"
             >
               <div className="flex items-center justify-between mb-3 px-1">
@@ -208,9 +214,17 @@ export function BeforeAfter() {
                     </p>
 
                     <div className="flex items-center gap-2 pt-0.5">
-                      <div className="px-3 py-1 rounded-lg bg-gradient-to-r from-[#12372A] to-[#168B72] text-white font-semibold text-[10px] shadow-xs">
+                      <a
+                        href="#contact"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const el = document.getElementById("contact");
+                          if (el) el.scrollIntoView({ behavior: "smooth" });
+                        }}
+                        className="px-3 py-1 rounded-lg bg-gradient-to-r from-[#12372A] to-[#168B72] text-white font-semibold text-[10px] shadow-xs cursor-pointer hover:opacity-90 transition-opacity"
+                      >
                         Start a Project
-                      </div>
+                      </a>
                       <div className="px-3 py-1 rounded-lg bg-[#FFFFFF] text-[#17211F] font-medium text-[10px] border border-[rgba(23,33,31,0.1)]">
                         View Services
                       </div>
@@ -253,7 +267,7 @@ export function BeforeAfter() {
                   <Compass className="h-4 w-4" />
                 </div>
                 <h4 className="text-xs sm:text-sm font-bold text-[#17211F] mb-1">Clearer User Journey</h4>
-                <p className="text-xs text-[#5A6966] leading-relaxed font-normal">
+                <p className="text-xs sm:text-sm text-[#5A6966] leading-relaxed font-normal">
                   Make it easier for visitors to understand your business and take the next step.
                 </p>
               </div>
@@ -265,7 +279,7 @@ export function BeforeAfter() {
                   <Layout className="h-4 w-4" />
                 </div>
                 <h4 className="text-xs sm:text-sm font-bold text-[#17211F] mb-1">Cleaner Layout</h4>
-                <p className="text-xs text-[#5A6966] leading-relaxed font-normal">
+                <p className="text-xs sm:text-sm text-[#5A6966] leading-relaxed font-normal">
                   Organized structure that removes clutter and guides focus naturally.
                 </p>
               </div>
@@ -277,7 +291,7 @@ export function BeforeAfter() {
                   <Layers className="h-4 w-4" />
                 </div>
                 <h4 className="text-xs sm:text-sm font-bold text-[#17211F] mb-1">Stronger Hierarchy</h4>
-                <p className="text-xs text-[#5A6966] leading-relaxed font-normal">
+                <p className="text-xs sm:text-sm text-[#5A6966] leading-relaxed font-normal">
                   Editorial typography and spacing that emphasize key services immediately.
                 </p>
               </div>
@@ -289,7 +303,7 @@ export function BeforeAfter() {
                   <MousePointerClick className="h-4 w-4" />
                 </div>
                 <h4 className="text-xs sm:text-sm font-bold text-[#17211F] mb-1">Clear Calls-to-Action</h4>
-                <p className="text-xs text-[#5A6966] leading-relaxed font-normal">
+                <p className="text-xs sm:text-sm text-[#5A6966] leading-relaxed font-normal">
                   Frictionless contact pathways designed to encourage genuine inquiries.
                 </p>
               </div>

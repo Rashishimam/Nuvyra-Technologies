@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "dark" | "outline" | "ghost" | "coral";
   size?: "sm" | "md" | "lg";
+  href?: string;
   children: React.ReactNode;
 }
 
@@ -13,7 +14,9 @@ export function Button({
   className,
   variant = "primary",
   size = "md",
+  href,
   children,
+  onClick,
   ...props
 }: ButtonProps) {
   const baseStyles =
@@ -40,9 +43,37 @@ export function Button({
       "bg-transparent text-[#5A6966] hover:text-[#17211F] hover:bg-black/[0.04]",
   };
 
+  const combinedClasses = cn(baseStyles, sizeStyles[size], variantStyles[variant], className);
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        className={combinedClasses}
+        onClick={(e) => {
+          if (onClick) onClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
+          if (href.startsWith("#")) {
+            e.preventDefault();
+            const targetId = href.substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+              targetElement.scrollIntoView({ behavior: "smooth" });
+              window.history.pushState(null, "", href);
+            } else {
+              window.location.hash = href;
+            }
+          }
+        }}
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
     <button
-      className={cn(baseStyles, sizeStyles[size], variantStyles[variant], className)}
+      className={combinedClasses}
+      onClick={onClick}
       {...props}
     >
       {children}

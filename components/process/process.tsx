@@ -101,7 +101,7 @@ export function Process() {
   return (
     <section
       id="process"
-      className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 relative scroll-mt-16 bg-[#F7F7F2] border-b border-[rgba(23,33,31,0.08)] overflow-hidden"
+      className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 relative scroll-mt-20 bg-[#F7F7F2] border-b border-[rgba(23,33,31,0.08)] overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
         <SectionHeader
@@ -110,6 +110,7 @@ export function Process() {
           title="How We"
           highlightText="Work"
           description="A clear, predictable 5-step roadmap that keeps your project on schedule from kickoff to launch."
+          className="mb-8 sm:mb-10"
         />
 
         {/* Clean Timeline with Progressively Animated Connecting Line */}
@@ -177,7 +178,7 @@ export function Process() {
                       {step.title}
                     </h3>
 
-                    <p className="text-xs text-[#5A6966] leading-relaxed font-normal mb-4">
+                    <p className="text-xs sm:text-sm text-[#5A6966] leading-relaxed font-normal mb-4">
                       {step.description}
                     </p>
                   </div>

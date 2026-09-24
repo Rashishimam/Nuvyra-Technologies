@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Nuvyra Technologies | Bespoke Digital Engineering & Web Development",
+  title: "Nuvyra Technologies | Web Development & Digital Solutions",
   description:
     "We design and build high-performance websites, custom web applications, and modern digital platforms for businesses that demand technical rigor, speed, and elegance.",
   keywords: [
@@ -29,14 +29,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://nuvyratech.com",
-    title: "Nuvyra Technologies | Bespoke Digital Engineering & Web Development",
+    title: "Nuvyra Technologies | Web Development & Digital Solutions",
     description:
       "We design and build high-performance websites, custom web applications, and modern digital platforms for businesses that demand technical rigor, speed, and elegance.",
     siteName: "Nuvyra Technologies",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nuvyra Technologies | Bespoke Digital Engineering & Web Development",
+    title: "Nuvyra Technologies | Web Development & Digital Solutions",
     description:
       "We design and build high-performance websites, custom web applications, and modern digital platforms for businesses that demand technical rigor, speed, and elegance.",
   },
