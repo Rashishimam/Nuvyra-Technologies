@@ -21,7 +21,6 @@ const SERVICE_OPTIONS = [
   "Landing Page",
   "E-commerce Website",
   "Web Application",
-  "Portfolio Website",
   "Website Redesign",
   "Custom Digital Solution",
   "Not Sure — Let's Discuss",
@@ -91,6 +90,16 @@ export function Contact() {
   const contactCardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const handleSelectService = (event: Event) => {
+      const customEv = event as CustomEvent<string>;
+      if (customEv.detail && SERVICE_OPTIONS.includes(customEv.detail)) {
+        setFormData((prev) => ({ ...prev, service: customEv.detail }));
+        setErrors((prev) => ({ ...prev, service: undefined }));
+      }
+    };
+
+    window.addEventListener("nuvyra-select-service", handleSelectService);
+
     const handleClickOutside = (event: MouseEvent) => {
       if (contactCardRef.current && !contactCardRef.current.contains(event.target as Node)) {
         setOpenDropdown(null);
@@ -106,6 +115,7 @@ export function Contact() {
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
     return () => {
+      window.removeEventListener("nuvyra-select-service", handleSelectService);
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };

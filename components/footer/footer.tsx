@@ -44,7 +44,7 @@ export function Footer() {
             <h4 className="font-mono font-semibold uppercase tracking-widest text-[#F8FAF9] mb-2 text-[11px]">
               Navigation
             </h4>
-            <Link href="/" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
+            <Link href="#top" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
               Home
             </Link>
             <Link href="#about" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
@@ -55,6 +55,12 @@ export function Footer() {
             </Link>
             <Link href="#process" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
               Our Process
+            </Link>
+            <Link href="#work" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
+              Work &amp; Before/After
+            </Link>
+            <Link href="#contact" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
+              Contact Us
             </Link>
             <Link href="#team" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
               Our Team
@@ -92,14 +98,21 @@ export function Footer() {
               Direct Inquiries
             </h4>
             <a
-              href="mailto:withdaniel912@gmail.com"
+              href="mailto:sourav620kumar@gmail.com"
               className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors flex items-center gap-2 truncate"
             >
               <Mail className="h-3.5 w-3.5 text-[#168B72] shrink-0" />
-              <span className="truncate">withdaniel912@gmail.com</span>
+              <span className="truncate">sourav620kumar@gmail.com</span>
             </a>
             <a
-              href="https://wa.me/919334559315?text=Hi%20Joy%2C%20I%20found%20Nuvyra%20Technologies%20and%20would%20like%20to%20discuss%20a%20website%20project."
+              href="mailto:rashishimam@gmail.com"
+              className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors flex items-center gap-2 truncate"
+            >
+              <Mail className="h-3.5 w-3.5 text-[#168B72] shrink-0" />
+              <span className="truncate">rashishimam@gmail.com</span>
+            </a>
+            <a
+              href="https://wa.me/919334559315?text=Hi%2C%20I%20found%20Nuvyra%20Technologies%20and%20would%20like%20to%20discuss%20a%20website%20project."
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#C2CEC9] hover:text-emerald-400 transition-colors flex items-center gap-2"

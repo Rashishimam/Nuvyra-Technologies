@@ -11,10 +11,10 @@ import { cn } from "@/lib/utils";
 import { NavItem } from "@/types";
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Services", href: "#services" },
-  { label: "Solutions", href: "#solutions" },
-  { label: "Process", href: "#process" },
+  { label: "Home", href: "#top" },
   { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Process", href: "#process" },
   { label: "Contact", href: "#contact" },
 ];
 
