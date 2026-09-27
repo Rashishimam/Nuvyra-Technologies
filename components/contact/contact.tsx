@@ -21,7 +21,6 @@ const SERVICE_OPTIONS = [
   "Landing Page",
   "E-commerce Website",
   "Web Application",
-  "Portfolio Website",
   "Website Redesign",
   "Custom Digital Solution",
   "Not Sure — Let's Discuss",
@@ -85,11 +84,22 @@ export function Contact() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [hasServerError, setHasServerError] = useState(false);
+  const [serverErrorMessage, setServerErrorMessage] = useState<string | null>(null);
   const [openDropdown, setOpenDropdown] = useState<"email" | "whatsapp" | null>(null);
 
   const contactCardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const handleSelectService = (event: Event) => {
+      const customEv = event as CustomEvent<string>;
+      if (customEv.detail && SERVICE_OPTIONS.includes(customEv.detail)) {
+        setFormData((prev) => ({ ...prev, service: customEv.detail }));
+        setErrors((prev) => ({ ...prev, service: undefined }));
+      }
+    };
+
+    window.addEventListener("nuvyra-select-service", handleSelectService);
+
     const handleClickOutside = (event: MouseEvent) => {
       if (contactCardRef.current && !contactCardRef.current.contains(event.target as Node)) {
         setOpenDropdown(null);
@@ -105,6 +115,7 @@ export function Contact() {
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
     return () => {
+      window.removeEventListener("nuvyra-select-service", handleSelectService);
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
@@ -147,6 +158,7 @@ export function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setHasServerError(false);
+    setServerErrorMessage(null);
 
     if (!validate()) return;
 
@@ -161,15 +173,42 @@ export function Contact() {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
       if (response.ok && data.success) {
         setIsSubmitted(true);
+        setFormData({
+          name: "",
+          company: "",
+          email: "",
+          phone: "",
+          service: "",
+          budget: "",
+          description: "",
+          honeypot: "",
+        });
+        setErrors({});
+        setHasServerError(false);
+        setServerErrorMessage(null);
       } else {
+        if (data.fieldErrors) {
+          const mappedErrors: FormErrors = {};
+          for (const [key, msgs] of Object.entries(data.fieldErrors)) {
+            if (Array.isArray(msgs) && msgs.length > 0) {
+              const fieldKey = key === "message" ? "description" : key;
+              (mappedErrors as Record<string, string>)[fieldKey] = msgs[0];
+            }
+          }
+          setErrors((prev) => ({ ...prev, ...mappedErrors }));
+        }
+        setServerErrorMessage(
+          data.error || "Your request could not be sent right now. Please try again or contact us directly."
+        );
         setHasServerError(true);
       }
     } catch (err) {
-      console.error("[Nuvyra Client Notice] Form submission failed:", err);
+      console.error("[Nuvyra Client Notice] Form submission network error:", err);
+      setServerErrorMessage("Network error. Please check your connection and try again.");
       setHasServerError(true);
     } finally {
       setIsLoading(false);
@@ -379,10 +418,10 @@ export function Contact() {
                   </div>
 
                   <h3 className="text-2xl font-bold text-[#17211F] mb-2 tracking-tight">
-                    Your project request has been sent successfully.
+                    Project request sent successfully.
                   </h3>
                   <p className="text-xs sm:text-sm text-[#5A6966] max-w-md leading-relaxed mb-8 font-normal">
-                    Thank you for contacting Nuvyra Technologies. We will review your project details and get back to you shortly.
+                    We'll get back to you soon.
                   </p>
 
                   <Button
@@ -415,7 +454,7 @@ export function Contact() {
                       <div className="flex items-start gap-2.5">
                         <AlertCircle className="h-4 w-4 text-rose-600 shrink-0 mt-0.5" />
                         <span className="leading-relaxed font-medium">
-                          Your request could not be sent right now. Please try again or contact us directly.
+                          {serverErrorMessage || "Your request could not be sent right now. Please try again or contact us directly."}
                         </span>
                       </div>
                       <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-rose-200 text-xs">

@@ -11,10 +11,10 @@ import { cn } from "@/lib/utils";
 import { NavItem } from "@/types";
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Services", href: "#services" },
-  { label: "Solutions", href: "#solutions" },
-  { label: "Process", href: "#process" },
+  { label: "Home", href: "#top" },
   { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Process", href: "#process" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -79,7 +79,7 @@ export function Navbar() {
             className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#168B72] rounded-xl p-1 -m-1"
           >
             <Image
-              src="/images/nuvyra-logo-clean.png"
+              src="/images/nuvyra-logo.png"
               alt="Nuvyra Technologies Logo"
               width={180}
               height={44}

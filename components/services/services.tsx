@@ -23,10 +23,10 @@ interface ServiceItemData {
   description: string;
   icon: React.ElementType;
   tag?: string;
-  gridSpan: string;
   accentBg: string;
   iconColor: string;
   badgeAccent?: string;
+  targetServiceOption: string;
 }
 
 const SERVICES: ServiceItemData[] = [
@@ -34,13 +34,13 @@ const SERVICES: ServiceItemData[] = [
     id: "business-websites",
     title: "Business Websites",
     description:
-      "Professional, bespoke websites designed to help businesses establish authority, communicate their unique value, and turn first-time visitors into high-value inquiries.",
+      "Bespoke websites designed for authority, communicating your unique value and converting visitors into high-value inquiries.",
     icon: Globe,
     tag: "Core Offering",
-    gridSpan: "md:col-span-2 lg:col-span-8",
     accentBg: "from-[#168B72]/10 via-[#2AB7A9]/05 to-transparent",
     iconColor: "text-[#168B72] bg-[#168B72]/10 border-[#168B72]/25",
     badgeAccent: "bg-[#168B72]/10 text-[#12372A] border-[#168B72]/30",
+    targetServiceOption: "Business Website",
   },
   {
     id: "landing-pages",
@@ -48,51 +48,41 @@ const SERVICES: ServiceItemData[] = [
     description:
       "Fast, focused single-page funnels engineered to convert campaign and ad traffic into qualified leads.",
     icon: LayoutTemplate,
-    gridSpan: "md:col-span-1 lg:col-span-4",
     accentBg: "from-[#F26B4A]/08 to-transparent",
     iconColor: "text-[#F26B4A] bg-[#F26B4A]/10 border-[#F26B4A]/25",
+    targetServiceOption: "Landing Page",
   },
   {
     id: "ecommerce-websites",
     title: "E-Commerce Stores",
     description:
-      "Modern, fast online stores with fluid catalog browsing, instant search, and streamlined zero-friction checkout experiences.",
+      "Modern online stores with fluid catalog browsing, instant search, and zero-friction checkout experiences.",
     icon: ShoppingCart,
-    gridSpan: "md:col-span-1 lg:col-span-4",
     accentBg: "from-[#D6A84B]/08 to-transparent",
     iconColor: "text-[#9A751F] bg-[#D6A84B]/15 border-[#D6A84B]/30",
+    targetServiceOption: "E-commerce Website",
   },
   {
     id: "web-applications",
     title: "Custom Web Applications",
     description:
-      "Client portals, internal dashboards, and full-stack software built to automate operations and handle complex user workflows.",
+      "Client portals, internal dashboards, and full-stack software built to automate operations and workflows.",
     icon: Layers,
     tag: "Scalable Architecture",
-    gridSpan: "md:col-span-2 lg:col-span-8",
     accentBg: "from-[#2AB7A9]/10 via-[#168B72]/05 to-transparent",
     iconColor: "text-[#2AB7A9] bg-[#2AB7A9]/15 border-[#2AB7A9]/30",
     badgeAccent: "bg-[#2AB7A9]/15 text-[#12372A] border-[#2AB7A9]/35",
-  },
-  {
-    id: "portfolio-websites",
-    title: "Portfolio & Agency Sites",
-    description:
-      "Clean, editorial platforms crafted for agencies, consultants, and professionals to showcase their work with impact.",
-    icon: Palette,
-    gridSpan: "md:col-span-1 lg:col-span-4",
-    accentBg: "from-[#12372A]/05 to-transparent",
-    iconColor: "text-[#12372A] bg-[#12372A]/10 border-[#12372A]/20",
+    targetServiceOption: "Web Application",
   },
   {
     id: "website-redesign",
     title: "Website Redesign & Modernization",
     description:
-      "Overhaul outdated layouts with contemporary typography, sub-second performance, and conversion-first user journeys.",
+      "Overhaul outdated layouts with contemporary typography, sub-second performance, and conversion-first UX.",
     icon: RefreshCw,
-    gridSpan: "md:col-span-1 lg:col-span-4",
     accentBg: "from-[#F26B4A]/08 to-transparent",
     iconColor: "text-[#F26B4A] bg-[#F26B4A]/10 border-[#F26B4A]/25",
+    targetServiceOption: "Website Redesign",
   },
   {
     id: "custom-digital-solutions",
@@ -100,9 +90,9 @@ const SERVICES: ServiceItemData[] = [
     description:
       "Tailor-made digital tools, API integrations, and specialized software systems engineered around your exact workflow.",
     icon: Code2,
-    gridSpan: "md:col-span-2 lg:col-span-4",
     accentBg: "from-[#D6A84B]/08 to-transparent",
     iconColor: "text-[#9A751F] bg-[#D6A84B]/15 border-[#D6A84B]/30",
+    targetServiceOption: "Custom Digital Solution",
   },
 ];
 
@@ -154,6 +144,16 @@ function ServiceCard({ service }: { service: ServiceItemData }) {
 
   const handleScrollToContact = (e: React.MouseEvent) => {
     e.preventDefault();
+
+    // Dispatch service pre-selection event to contact form
+    if (service.targetServiceOption && typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("nuvyra-select-service", {
+          detail: service.targetServiceOption,
+        })
+      );
+    }
+
     const contactElement = document.getElementById("contact");
     if (contactElement) {
       contactElement.scrollIntoView({ behavior: "smooth" });
@@ -164,10 +164,7 @@ function ServiceCard({ service }: { service: ServiceItemData }) {
   };
 
   return (
-    <motion.div
-      variants={cardVariants}
-      className={service.gridSpan}
-    >
+    <motion.div variants={cardVariants} className="h-full">
       <Link
         href="#contact"
         onClick={handleScrollToContact}
@@ -196,12 +193,16 @@ function ServiceCard({ service }: { service: ServiceItemData }) {
 
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-4 sm:mb-5">
-                <div className={`h-10 w-10 sm:h-11 sm:w-11 rounded-2xl border flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-xs ${service.iconColor}`}>
+                <div
+                  className={`h-10 w-10 sm:h-11 sm:w-11 rounded-2xl border flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-xs ${service.iconColor}`}
+                >
                   <Icon className="h-5 w-5" />
                 </div>
 
                 {service.tag && (
-                  <span className={`inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider border transition-transform duration-200 group-hover:scale-105 ${service.badgeAccent}`}>
+                  <span
+                    className={`inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider border transition-transform duration-200 group-hover:scale-105 ${service.badgeAccent}`}
+                  >
                     <Sparkles className="h-2.5 w-2.5" />
                     {service.tag}
                   </span>
@@ -254,7 +255,7 @@ export function Services() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {SERVICES.map((service) => (
             <ServiceCard key={service.id} service={service} />

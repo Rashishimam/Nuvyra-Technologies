@@ -2,7 +2,7 @@ import { Resend } from "resend";
 import type { ContactFormData } from "@/lib/validations/contact";
 
 const COMPANY_NAME = "Nuvyra Technologies";
-const CONTACT_PERSON = "Joy";
+const CONTACT_PERSON = "Nuvyra Technologies Team";
 
 /**
  * Get a configured Resend client.
@@ -27,7 +27,7 @@ function getEmailConfig() {
     from:
       process.env.EMAIL_FROM ||
       `${COMPANY_NAME} <onboarding@resend.dev>`,
-    ownerEmail: process.env.OWNER_EMAIL || "withdaniel912@gmail.com",
+    ownerEmail: process.env.OWNER_EMAIL || "sourav620kumar@gmail.com",
   };
 }
 

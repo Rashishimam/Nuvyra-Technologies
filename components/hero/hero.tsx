@@ -18,37 +18,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-/* ─── Floating Particles Component ─── */
-function FloatingParticles() {
-  const particles = [
-    { left: "15%", top: "20%", size: 3, delay: 0, duration: 14 },
-    { left: "75%", top: "60%", size: 2, delay: 2, duration: 16 },
-    { left: "40%", top: "70%", size: 4, delay: 4, duration: 12 },
-    { left: "85%", top: "30%", size: 2.5, delay: 6, duration: 18 },
-    { left: "25%", top: "85%", size: 3, delay: 8, duration: 15 },
-    { left: "60%", top: "15%", size: 2, delay: 3, duration: 13 },
-    { left: "90%", top: "80%", size: 3, delay: 5, duration: 17 },
-  ];
-
-  return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-      {particles.map((p, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full bg-[#2AB7A9]/40"
-          style={{
-            left: p.left,
-            top: p.top,
-            width: p.size,
-            height: p.size,
-            animation: `${i % 2 === 0 ? "particle-float" : "particle-float-alt"} ${p.duration}s ease-in-out ${p.delay}s infinite`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
 export function Hero() {
   /* ─── Mouse Parallax for Hero Visual ─── */
   const heroVisualRef = useRef<HTMLDivElement>(null);
@@ -105,9 +74,6 @@ export function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute bottom-5 left-10 w-[300px] h-[300px] bg-[#F26B4A]/06 rounded-full blur-[130px] animate-pulse-subtle"
       />
-
-      {/* Floating Light Particles */}
-      <FloatingParticles />
 
       {/* Subtle Grid Texture */}
       <div className="absolute inset-0 bg-grid-light opacity-60 pointer-events-none" />

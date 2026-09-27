@@ -1,10 +1,9 @@
 import { Navbar } from "@/components/navbar/navbar";
 import { Hero } from "@/components/hero/hero";
-import { Services } from "@/components/services/services";
-import { ProblemSolver } from "@/components/problem-solver/problem-solver";
-import { BeforeAfter } from "@/components/before-after/before-after";
-import { Process } from "@/components/process/process";
 import { About } from "@/components/about/about";
+import { Services } from "@/components/services/services";
+import { Process } from "@/components/process/process";
+import { BeforeAfter } from "@/components/before-after/before-after";
 import { Contact } from "@/components/contact/contact";
 import { Team } from "@/components/team/team";
 import { Footer } from "@/components/footer/footer";
@@ -18,20 +17,17 @@ export default function Home() {
         {/* HERO SECTION */}
         <Hero />
 
+        {/* ABOUT NUVYRA */}
+        <About />
+
         {/* SERVICES - What We Can Build For You */}
         <Services />
-
-        {/* SOLUTIONS - What Does Your Business Need? */}
-        <ProblemSolver />
-
-        {/* WORK / BEFORE & AFTER - See What a Better Website Can Look Like */}
-        <BeforeAfter />
 
         {/* PROCESS - How We Work */}
         <Process />
 
-        {/* ABOUT NUVYRA - We Build Digital Experiences That Mean Business */}
-        <About />
+        {/* WORK / BEFORE & AFTER - See What a Better Website Can Look Like */}
+        <BeforeAfter />
 
         {/* CONTACT - Have a Project in Mind? */}
         <Contact />
@@ -48,3 +44,4 @@ export default function Home() {
     </div>
   );
 }
+

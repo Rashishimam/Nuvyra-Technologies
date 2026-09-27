@@ -10,13 +10,12 @@ import { rateLimit } from "@/lib/rate-limit";
 
 // ─── Constants ──────────────────────────────────────────────
 
-const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_MAX = 15;
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
 
 // ─── Helper: Extract client IP ──────────────────────────────
 
 function getClientIP(request: NextRequest): string {
-  // Vercel / reverse proxy headers
   const forwarded = request.headers.get("x-forwarded-for");
   if (forwarded) {
     return forwarded.split(",")[0].trim();
@@ -27,7 +26,6 @@ function getClientIP(request: NextRequest): string {
     return realIP.trim();
   }
 
-  // Fallback for local development
   return "127.0.0.1";
 }
 
@@ -45,11 +43,11 @@ export async function POST(request: NextRequest) {
     });
 
     if (!rateLimitResult.success) {
+      console.warn(`[Nuvyra:RATE_LIMIT] Rate limit exceeded for IP: ${clientIP}`);
       return NextResponse.json(
         {
           success: false,
-          error:
-            "Too many requests. Please wait a moment before trying again.",
+          error: "Too many requests. Please wait a moment before trying again.",
         },
         {
           status: 429,
@@ -71,8 +69,9 @@ export async function POST(request: NextRequest) {
     try {
       body = await request.json();
     } catch {
+      console.warn("[Nuvyra:VALIDATION] Invalid JSON in request body");
       return NextResponse.json(
-        { success: false, error: "Invalid request body." },
+        { success: false, error: "Invalid request format." },
         { status: 400 }
       );
     }
@@ -84,10 +83,11 @@ export async function POST(request: NextRequest) {
 
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
-      // Return the first error message for display
       const firstError =
         Object.values(fieldErrors).flat().filter(Boolean)[0] ||
         "Invalid form data.";
+
+      console.warn("[Nuvyra:VALIDATION] Form validation failed:", firstError);
 
       return NextResponse.json(
         { success: false, error: firstError, fieldErrors },
@@ -98,18 +98,18 @@ export async function POST(request: NextRequest) {
     const inquiry = result.data;
 
     // ──────────────────────────────────────────────────────────
-    // 4. Honeypot check — silently "accept" to not reveal logic
+    // 4. Honeypot check — silently accept bots without processing
     // ──────────────────────────────────────────────────────────
     if (inquiry.honeypot && inquiry.honeypot.trim().length > 0) {
+      console.info("[Nuvyra:BOT] Honeypot triggered, ignoring submission.");
       return NextResponse.json({
         success: true,
-        message: "Your project request has been sent successfully.",
+        message: "Project request sent successfully. We'll get back to you soon.",
       });
     }
 
     // ──────────────────────────────────────────────────────────
-    // 5. Database insert (Supabase) — first priority
-    //    Even if email fails later, the inquiry is preserved.
+    // 5. Database insert (Supabase) — Priority 1
     // ──────────────────────────────────────────────────────────
     let dbSaved = false;
     let dbError: string | null = null;
@@ -130,22 +130,24 @@ export async function POST(request: NextRequest) {
         });
 
         if (error) {
-          console.error("[Nuvyra] Supabase insert error:", error);
+          console.error("[Nuvyra:DATABASE] Supabase insert error:", error.message);
           dbError = error.message;
         } else {
           dbSaved = true;
+          console.info("[Nuvyra:DATABASE] Inquiry successfully saved to Supabase.");
         }
       } catch (err) {
-        console.error("[Nuvyra] Supabase insert exception:", err);
+        console.error("[Nuvyra:DATABASE] Supabase insert exception:", err);
         dbError =
           err instanceof Error ? err.message : "Database insertion failed";
       }
     } else {
+      console.warn("[Nuvyra:DATABASE] Supabase client not initialized (missing environment variables).");
       dbError = "Database not configured";
     }
 
     // ──────────────────────────────────────────────────────────
-    // 6. Send notification email to owner
+    // 6. Send notification email to owner (Resend)
     // ──────────────────────────────────────────────────────────
     let emailSent = false;
     let emailError: string | null = null;
@@ -155,9 +157,12 @@ export async function POST(request: NextRequest) {
       emailSent = ownerResult.success;
       if (!ownerResult.success) {
         emailError = ownerResult.error || "Owner notification failed";
+        console.error("[Nuvyra:EMAIL] Owner notification failed:", emailError);
+      } else {
+        console.info("[Nuvyra:EMAIL] Owner notification email sent successfully.");
       }
     } catch (err) {
-      console.error("[Nuvyra] Owner email exception:", err);
+      console.error("[Nuvyra:EMAIL] Owner email exception:", err);
       emailError =
         err instanceof Error ? err.message : "Owner notification failed";
     }
@@ -169,42 +174,27 @@ export async function POST(request: NextRequest) {
       const visitorResult = await sendVisitorConfirmation(inquiry);
       if (!visitorResult.success) {
         console.warn(
-          "[Nuvyra] Visitor confirmation email failed (non-fatal):",
+          "[Nuvyra:EMAIL] Visitor confirmation email failed (non-fatal):",
           visitorResult.error
         );
+      } else {
+        console.info("[Nuvyra:EMAIL] Visitor confirmation email sent successfully.");
       }
     } catch (err) {
       console.warn(
-        "[Nuvyra] Visitor confirmation email exception (non-fatal):",
+        "[Nuvyra:EMAIL] Visitor confirmation email exception (non-fatal):",
         err
       );
     }
 
     // ──────────────────────────────────────────────────────────
-    // 8. Determine overall response
-    //
-    //    Success if EITHER the DB save or owner email succeeded.
-    //    The inquiry is considered "received" if we have it
-    //    stored somewhere (DB) or someone was notified (email).
-    //    Both failing = inquiry would be lost = error.
+    // 8. Overall Success / Error Response
     // ──────────────────────────────────────────────────────────
     if (dbSaved || emailSent) {
-      // Log any partial failures for monitoring
-      if (!dbSaved) {
-        console.warn(
-          `[Nuvyra] Inquiry from ${inquiry.email} — DB save failed (${dbError}), but email was sent.`
-        );
-      }
-      if (!emailSent) {
-        console.warn(
-          `[Nuvyra] Inquiry from ${inquiry.email} — Email failed (${emailError}), but saved to DB.`
-        );
-      }
-
       return NextResponse.json(
         {
           success: true,
-          message: "Your project request has been sent successfully.",
+          message: "Project request sent successfully. We'll get back to you soon.",
         },
         {
           headers: {
@@ -214,10 +204,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Both DB and email failed — inquiry would be lost
+    // Both DB and email failed — inquiry could not be delivered
     console.error(
-      `[Nuvyra] CRITICAL: Inquiry from ${inquiry.email} LOST — ` +
-        `DB error: ${dbError}, Email error: ${emailError}`
+      `[Nuvyra:UNKNOWN] CRITICAL: Inquiry delivery failed — DB: ${dbError}, Email: ${emailError}`
     );
 
     return NextResponse.json(
@@ -229,7 +218,6 @@ export async function POST(request: NextRequest) {
       { status: 503 }
     );
   } catch (error) {
-    // Catch-all for unexpected errors
     if (error instanceof ZodError) {
       return NextResponse.json(
         { success: false, error: "Invalid form data." },
@@ -237,7 +225,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.error("[Nuvyra] Contact handler unexpected error:", error);
+    console.error("[Nuvyra:UNKNOWN] Unexpected handler exception:", error);
     return NextResponse.json(
       {
         success: false,
