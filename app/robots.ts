@@ -1,12 +1,13 @@
 import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nuvyratech.com";
   return {
     rules: {
       userAgent: "*",
       allow: "/",
       disallow: ["/api/"],
     },
-    sitemap: "https://nuvyratech.com/sitemap.xml",
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }

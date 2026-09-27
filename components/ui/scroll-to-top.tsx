@@ -39,7 +39,7 @@ export function ScrollToTop() {
           whileHover={shouldReduceMotion ? undefined : { scale: 1.08, y: -2 }}
           whileTap={{ scale: 0.95 }}
           onClick={scrollToTop}
-          aria-label="Scroll to top"
+          aria-label="Back to top"
           className="fixed bottom-4 right-4 sm:bottom-7 sm:right-7 z-40 h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-[#12372A]/90 hover:bg-[#168B72] text-[#2AB7A9] hover:text-[#F8FAF9] border border-[#168B72]/40 hover:border-[#2AB7A9] backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-center cursor-pointer transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2AB7A9]"
         >
           <ArrowUp className="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.5]" />

@@ -8,41 +8,66 @@ const inter = Inter({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nuvyratech.com";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Nuvyra Technologies | Web Development & Digital Solutions",
   description:
-    "We design and build high-performance websites, custom web applications, and modern digital platforms for businesses that demand technical rigor, speed, and elegance.",
+    "Nuvyra Technologies designs and develops modern websites, web applications, and custom digital solutions built around practical business needs.",
   keywords: [
     "Nuvyra Technologies",
     "Web Development",
-    "Enterprise Web Applications",
-    "Bespoke Website Design",
-    "Next.js Development Studio",
-    "TypeScript Solutions",
-    "Custom Software Engineering",
+    "Web Applications",
+    "Website Design",
+    "Next.js Development",
+    "Digital Solutions",
+    "Custom Software",
   ],
-  authors: [{ name: "Nuvyra Technologies", url: "https://nuvyratech.com" }],
+  authors: [{ name: "Nuvyra Technologies" }],
   creator: "Nuvyra Technologies",
   publisher: "Nuvyra Technologies",
-  metadataBase: new URL("https://nuvyratech.com"),
+  alternates: {
+    canonical: siteUrl,
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/images/nuvyra-logo.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://nuvyratech.com",
+    url: siteUrl,
     title: "Nuvyra Technologies | Web Development & Digital Solutions",
     description:
-      "We design and build high-performance websites, custom web applications, and modern digital platforms for businesses that demand technical rigor, speed, and elegance.",
+      "Nuvyra Technologies designs and develops modern websites, web applications, and custom digital solutions built around practical business needs.",
     siteName: "Nuvyra Technologies",
+    images: [
+      {
+        url: "/images/nuvyra-logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Nuvyra Technologies — Web Development & Digital Solutions",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Nuvyra Technologies | Web Development & Digital Solutions",
     description:
-      "We design and build high-performance websites, custom web applications, and modern digital platforms for businesses that demand technical rigor, speed, and elegance.",
+      "Nuvyra Technologies designs and develops modern websites, web applications, and custom digital solutions built around practical business needs.",
+    images: ["/images/nuvyra-logo.png"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

@@ -45,6 +45,7 @@ const WHATSAPP_NUMBERS = [
 ];
 
 const COMPANY_NAME = "Nuvyra Technologies";
+const AVAILABILITY_STATUS = "AVAILABLE FOR NEW PROJECTS";
 const WHATSAPP_MESSAGE = encodeURIComponent(
   "Hi, I found Nuvyra Technologies and would like to discuss a website project."
 );
@@ -98,7 +99,24 @@ export function Contact() {
       }
     };
 
+    const checkHashService = () => {
+      if (typeof window !== "undefined" && window.location.hash) {
+        const hash = window.location.hash;
+        if (hash.includes("service=")) {
+          const serviceParam = decodeURIComponent(
+            hash.split("service=")[1]?.split("&")[0] || ""
+          );
+          if (serviceParam && SERVICE_OPTIONS.includes(serviceParam)) {
+            setFormData((prev) => ({ ...prev, service: serviceParam }));
+            setErrors((prev) => ({ ...prev, service: undefined }));
+          }
+        }
+      }
+    };
+
+    checkHashService();
     window.addEventListener("nuvyra-select-service", handleSelectService);
+    window.addEventListener("hashchange", checkHashService);
 
     const handleClickOutside = (event: MouseEvent) => {
       if (contactCardRef.current && !contactCardRef.current.contains(event.target as Node)) {
@@ -116,6 +134,7 @@ export function Contact() {
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("nuvyra-select-service", handleSelectService);
+      window.removeEventListener("hashchange", checkHashService);
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
@@ -239,11 +258,11 @@ export function Contact() {
       {/* Subtle Atmospheric Gradient & Continuous Floating Lighting */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 right-1/4 w-[650px] h-[450px] bg-gradient-to-t from-[#168B72]/20 via-[#2AB7A9]/10 to-transparent rounded-full blur-[150px] animate-float-slow"
+        className="pointer-events-none absolute bottom-0 right-1/4 w-[650px] h-[450px] bg-gradient-to-t from-[#168B72]/20 via-[#2AB7A9]/10 to-transparent rounded-full blur-[70px] sm:blur-[150px] animate-float-slow"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-10 left-10 w-[400px] h-[400px] bg-[#D6A84B]/10 rounded-full blur-[160px] animate-float-reverse"
+        className="pointer-events-none absolute top-10 left-10 w-[400px] h-[400px] bg-[#D6A84B]/10 rounded-full blur-[80px] sm:blur-[160px] animate-float-reverse"
       />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -256,6 +275,12 @@ export function Contact() {
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 flex flex-col items-start"
           >
+            {/* Availability Indicator */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#18201F]/90 border border-[#2AB7A9]/35 text-[10px] font-mono font-semibold tracking-wider text-[#2AB7A9] uppercase mb-4 shadow-xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#2AB7A9] animate-pulse" />
+              <span>{AVAILABILITY_STATUS}</span>
+            </div>
+
             <span className="text-xs font-mono font-semibold text-[#2AB7A9] uppercase tracking-widest mb-3">
               LET&apos;S WORK TOGETHER
             </span>
@@ -418,10 +443,10 @@ export function Contact() {
                   </div>
 
                   <h3 className="text-2xl font-bold text-[#17211F] mb-2 tracking-tight">
-                    Project request sent successfully.
+                    ✓ Project request sent successfully.
                   </h3>
                   <p className="text-xs sm:text-sm text-[#5A6966] max-w-md leading-relaxed mb-8 font-normal">
-                    We'll get back to you soon.
+                    Thanks for reaching out. We&apos;ll get back to you soon.
                   </p>
 
                   <Button
@@ -553,7 +578,7 @@ export function Contact() {
                         aria-required="true"
                         aria-invalid={!!errors.email}
                         aria-describedby={errors.email ? "email-error" : undefined}
-                        placeholder="your.email@example.com"
+                        placeholder="you@company.com"
                         value={formData.email}
                         onChange={(e) => {
                           setFormData({ ...formData, email: e.target.value });
@@ -723,7 +748,7 @@ export function Contact() {
                       {isLoading ? (
                         <>
                           <Loader2 className="h-4 w-4 animate-spin" />
-                          <span>Sending Project Request...</span>
+                          <span>Sending...</span>
                         </>
                       ) : (
                         <>

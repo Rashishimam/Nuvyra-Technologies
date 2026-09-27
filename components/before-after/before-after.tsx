@@ -46,7 +46,7 @@ export function BeforeAfter() {
                   BEFORE
                 </span>
                 <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#FFFFFF] text-[#5A6966] border border-[rgba(23,33,31,0.1)]">
-                  DEMO — BEFORE
+                  BEFORE (CLUTTERED LAYOUT)
                 </span>
               </div>
 
@@ -59,8 +59,8 @@ export function BeforeAfter() {
                     <div className="h-2 w-2 rounded-full bg-slate-400" />
                     <div className="h-2 w-2 rounded-full bg-slate-400" />
                   </div>
-                  <span className="truncate max-w-[150px] text-[#5A6966]">Business Website</span>
-                  <span className="text-[9px] text-amber-700 font-sans">Outdated Structure</span>
+                  <span className="truncate max-w-[150px] text-[#5A6966]">Outdated Website</span>
+                  <span className="text-[9px] text-amber-700 font-sans">Legacy Structure</span>
                 </div>
 
                 {/* Cluttered Legacy Content */}
@@ -157,7 +157,7 @@ export function BeforeAfter() {
                   AFTER
                 </span>
                 <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-[#168B72]/10 text-[#12372A] border border-[#168B72]/30 font-semibold">
-                  DEMO — AFTER
+                  AFTER (NUVYRA REDESIGN)
                 </span>
               </div>
 
@@ -225,9 +225,17 @@ export function BeforeAfter() {
                       >
                         Start a Project
                       </a>
-                      <div className="px-3 py-1 rounded-lg bg-[#FFFFFF] text-[#17211F] font-medium text-[10px] border border-[rgba(23,33,31,0.1)]">
+                      <a
+                        href="#services"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const el = document.getElementById("services");
+                          if (el) el.scrollIntoView({ behavior: "smooth" });
+                        }}
+                        className="px-3 py-1 rounded-lg bg-[#FFFFFF] text-[#17211F] font-medium text-[10px] border border-[rgba(23,33,31,0.1)] cursor-pointer hover:border-[#168B72]/40 transition-colors"
+                      >
                         View Services
-                      </div>
+                      </a>
                     </div>
                   </div>
 

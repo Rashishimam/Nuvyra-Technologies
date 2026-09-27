@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight, Sparkles, ChevronRight } from "lucide-react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { NuvyraLogo } from "@/components/ui/logo";
 import { cn } from "@/lib/utils";
@@ -25,22 +24,30 @@ export function Navbar() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
 
-      const sections = NAV_ITEMS.map((item) => item.href.substring(1));
-      const scrollPosition = window.scrollY + 200;
+          const sections = NAV_ITEMS.map((item) => item.href.substring(1));
+          const scrollPosition = window.scrollY + 200;
 
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          const top = element.offsetTop;
-          const height = element.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(`#${sectionId}`);
-            break;
+          for (const sectionId of sections) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+              const top = element.offsetTop;
+              const height = element.offsetHeight;
+              if (scrollPosition >= top && scrollPosition < top + height) {
+                setActiveSection(`#${sectionId}`);
+                break;
+              }
+            }
           }
-        }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
@@ -74,17 +81,18 @@ export function Navbar() {
         <div className="flex items-center justify-between">
           {/* Brand Logo */}
           <Link
-            href="/"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#168B72] rounded-xl p-1 -m-1"
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              window.history.pushState(null, "", "#top");
+            }}
+            className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#168B72] rounded-xl p-1 -m-1 cursor-pointer"
           >
-            <Image
-              src="/images/nuvyra-logo.png"
-              alt="Nuvyra Technologies Logo"
-              width={180}
-              height={44}
-              priority
-              className="h-8 sm:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+            <NuvyraLogo
+              theme="color"
+              size="md"
+              className="transition-transform duration-300 group-hover:scale-[1.02]"
             />
           </Link>
 

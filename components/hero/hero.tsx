@@ -12,7 +12,6 @@ import {
   CheckCircle2,
   Terminal,
   Activity,
-  Users,
   ShieldCheck,
   Zap,
 } from "lucide-react";
@@ -64,15 +63,15 @@ export function Hero() {
       {/* Continuous Ambient Floating Background Shapes */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-0 left-1/3 -translate-x-1/2 -translate-y-1/3 w-[800px] h-[500px] bg-gradient-to-b from-[#168B72]/12 via-[#2AB7A9]/06 to-transparent rounded-full blur-[140px] animate-float-slow"
+        className="pointer-events-none absolute top-0 left-1/3 -translate-x-1/2 -translate-y-1/3 w-[800px] h-[500px] bg-gradient-to-b from-[#168B72]/12 via-[#2AB7A9]/06 to-transparent rounded-full blur-[70px] sm:blur-[140px] animate-float-slow"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 right-10 w-[450px] h-[450px] bg-[#D6A84B]/08 rounded-full blur-[150px] animate-float-reverse"
+        className="pointer-events-none absolute top-1/2 right-10 w-[450px] h-[450px] bg-[#D6A84B]/08 rounded-full blur-[70px] sm:blur-[150px] animate-float-reverse"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-5 left-10 w-[300px] h-[300px] bg-[#F26B4A]/06 rounded-full blur-[130px] animate-pulse-subtle"
+        className="pointer-events-none absolute bottom-5 left-10 w-[300px] h-[300px] bg-[#F26B4A]/06 rounded-full blur-[60px] sm:blur-[130px] animate-pulse-subtle"
       />
 
       {/* Subtle Grid Texture */}
@@ -87,11 +86,10 @@ export function Hero() {
               initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#FFFFFF] border border-[rgba(23,33,31,0.1)] text-[#12372A] text-xs font-mono font-medium tracking-wider uppercase mb-6 shadow-xs hover:border-[#168B72]/40 transition-colors"
+              className="inline-flex items-center gap-2.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#FFFFFF] border border-[rgba(23,33,31,0.1)] text-[#12372A] text-[10px] sm:text-xs font-mono font-medium tracking-wider uppercase mb-6 shadow-xs hover:border-[#168B72]/40 transition-colors max-w-full flex-wrap"
             >
-              <span className="h-2 w-2 rounded-full bg-[#168B72] shadow-[0_0_6px_#168B72] animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-[#168B72] shadow-[0_0_6px_#168B72] animate-pulse shrink-0" />
               <span className="font-semibold">NUVYRA TECHNOLOGIES &bull; DIGITAL STUDIO</span>
-              <span className="px-1.5 py-0.5 rounded bg-[#F26B4A]/15 text-[#F26B4A] text-[9px] font-bold">PRO</span>
             </motion.div>
 
             {/* 2. Main Headline (Reveals smoothly bottom to top) */}
@@ -142,29 +140,26 @@ export function Hero() {
               </Button>
             </motion.div>
 
-            {/* 5. Trust-Oriented Line & Proof Points */}
+            {/* 5. Trust-Oriented Benefit Line */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="mt-10 pt-7 border-t border-[rgba(23,33,31,0.1)] flex flex-col sm:flex-row sm:items-center gap-4 text-xs text-[#5A6966] font-medium w-full"
+              className="mt-8 pt-6 border-t border-[rgba(23,33,31,0.08)] flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-[#5A6966] font-medium w-full"
             >
-              <div className="flex items-center gap-2 text-[#12372A] font-semibold">
-                <Users className="h-4 w-4 text-[#168B72]" />
-                <span>Built by a focused two-person development team.</span>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 text-[#168B72] shrink-0" />
+                <span>Direct Communication</span>
               </div>
-
-              <div className="hidden sm:inline-block text-[#5A6966]/40">&bull;</div>
-
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-[#2AB7A9]" />
-                  <span>Direct Communication</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-[#2AB7A9]" />
-                  <span>No Agency Bloat</span>
-                </div>
+              <span className="hidden sm:inline-block text-[#5A6966]/40">&bull;</span>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 text-[#168B72] shrink-0" />
+                <span>Responsive Development</span>
+              </div>
+              <span className="hidden sm:inline-block text-[#5A6966]/40">&bull;</span>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 text-[#168B72] shrink-0" />
+                <span>Production-Ready Delivery</span>
               </div>
             </motion.div>
           </div>
