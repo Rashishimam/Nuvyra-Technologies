@@ -8,7 +8,6 @@ import {
   LayoutTemplate,
   ShoppingCart,
   Layers,
-  Palette,
   RefreshCw,
   Code2,
   ArrowRight,

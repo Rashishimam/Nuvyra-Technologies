@@ -5,7 +5,6 @@ import { Services } from "@/components/services/services";
 import { Process } from "@/components/process/process";
 import { BeforeAfter } from "@/components/before-after/before-after";
 import { Contact } from "@/components/contact/contact";
-import { Team } from "@/components/team/team";
 import { Footer } from "@/components/footer/footer";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
 
@@ -31,9 +30,6 @@ export default function Home() {
 
         {/* CONTACT - Have a Project in Mind? */}
         <Contact />
-
-        {/* TEAM - Meet the People Behind Nuvyra */}
-        <Team />
       </main>
 
       {/* FOOTER */}
