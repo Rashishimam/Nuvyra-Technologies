@@ -62,9 +62,6 @@ export function Footer() {
             <Link href="#contact" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
               Contact Us
             </Link>
-            <Link href="#team" className="text-[#C2CEC9] hover:text-[#2AB7A9] transition-colors">
-              Our Team
-            </Link>
           </div>
 
           {/* Services */}
